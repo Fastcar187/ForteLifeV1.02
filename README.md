@@ -1,6 +1,8 @@
-# Ghana Hospital Appointment System (GHAS)
+# Forte Life - Ghana Hospital Appointment System (GHAS)
 
 A production-grade, modern, accessible, low-data healthcare appointment and queue management system tailored for public and private clinics across Ghana.
+
+🔗 **Repository**: [https://github.com/Fastcar187/ForteLifeV1.02](https://github.com/Fastcar187/ForteLifeV1.02)
 
 Built in compliance with the **Republic of Ghana Data Protection Act, 2012 (Act 843)**, Ghana Health Service clinical triage standards, and the Data Protection Commission (DPC).
 
