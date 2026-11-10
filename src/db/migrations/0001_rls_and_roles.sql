@@ -57,7 +57,7 @@ ALTER TABLE patients FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS patient_self_access ON patients;
 CREATE POLICY patient_self_access ON patients FOR ALL
   USING (
-    userId = NULLIF(current_setting('app.user_id', true), '')::uuid
+    user_id = NULLIF(current_setting('app.user_id', true), '')::uuid
     OR current_setting('app.role', true) IN ('doctor', 'frontdesk', 'facility_admin', 'platform_admin')
   );
 
@@ -68,7 +68,7 @@ ALTER TABLE notification_prefs FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS prefs_self_access ON notification_prefs;
 CREATE POLICY prefs_self_access ON notification_prefs FOR ALL
   USING (
-    userId = NULLIF(current_setting('app.user_id', true), '')::uuid
+    user_id = NULLIF(current_setting('app.user_id', true), '')::uuid
     OR current_setting('app.role', true) IN ('facility_admin', 'platform_admin')
   );
 
