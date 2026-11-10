@@ -1,9 +1,8 @@
 import { drizzle } from "drizzle-orm/neon-serverless";
-import { Pool, neonConfig } from "@neondatabase/serverless";
+import { Pool } from "@neondatabase/serverless";
 import { sql } from "drizzle-orm";
 import * as schema from "./schema";
 import { SessionUser } from "../lib/types";
-import { getDataStore } from "../lib/data-store";
 
 let dbInstance: ReturnType<typeof drizzle> | null = null;
 let pool: Pool | null = null;
@@ -12,7 +11,6 @@ export function getDatabase() {
   const connectionString = process.env.DATABASE_URL;
 
   if (!connectionString || connectionString.includes("sample-pooler")) {
-    // Return null to signify fallback to in-memory store in dev/local demo
     return null;
   }
 
@@ -22,6 +20,35 @@ export function getDatabase() {
   }
 
   return dbInstance;
+}
+
+/**
+ * Persists audit log entry directly to Neon Postgres append-only table
+ */
+export async function recordAuditToDatabase(entry: {
+  actorId?: string | null;
+  actorRole?: string | null;
+  action: string;
+  recordType?: string | null;
+  recordId?: string | null;
+  ip?: string | null;
+  metadata?: Record<string, unknown> | null;
+}): Promise<void> {
+  const db = getDatabase();
+  if (!db) return;
+  try {
+    await db.insert(schema.auditLog).values({
+      actorId: entry.actorId ? (entry.actorId.startsWith("usr-") ? null : entry.actorId) : null,
+      actorRole: entry.actorRole || null,
+      action: entry.action,
+      recordType: entry.recordType || null,
+      recordId: entry.recordId ? (entry.recordId.startsWith("app-") ? null : entry.recordId) : null,
+      ip: entry.ip || "127.0.0.1",
+      metadata: entry.metadata || null,
+    });
+  } catch (err) {
+    console.warn("Neon audit_log persistence:", err);
+  }
 }
 
 /**
@@ -39,8 +66,8 @@ export async function withSecureTransaction<T>(
   const db = getDatabase();
 
   if (!db) {
-    // Development / Local resilient fallback to data-store
-    return await callback(getDataStore());
+    // Local fallback
+    return await callback(null);
   }
 
   return await db.transaction(async (tx) => {
@@ -59,4 +86,3 @@ export async function withSecureTransaction<T>(
     return result;
   });
 }
-
