@@ -29,15 +29,19 @@ export function Navbar({ user }: Props) {
         <div className="flex items-center justify-between h-16">
           {/* Logo Brand */}
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-teal-600 flex items-center justify-center shadow-md">
-              <Hospital className="w-6 h-6 text-white" />
+            <div className="h-10 bg-white px-2 py-0.5 rounded-lg flex items-center justify-center shadow-sm">
+              <img
+                src="/logo.png"
+                alt="Fortelife - Hospital Bookings & Health"
+                className="h-8 w-auto object-contain"
+              />
             </div>
-            <div>
-              <div className="font-bold text-base sm:text-lg tracking-tight text-white leading-tight">
-                Ghana Health Service
+            <div className="hidden sm:block">
+              <div className="font-bold text-base tracking-tight text-white leading-tight">
+                Fortelife
               </div>
-              <div className="text-xs text-teal-300 font-medium">
-                National Clinic Appointment System
+              <div className="text-[11px] text-teal-300 font-medium">
+                Hospital Bookings • Ghana&apos;s Healthcare Partner
               </div>
             </div>
           </Link>

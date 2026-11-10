@@ -27,13 +27,17 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-lg mx-auto my-8 space-y-6">
-      <div className="text-center space-y-2">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-navy-900 text-teal-400 mb-1">
-          <UserCheck className="w-6 h-6" />
+      <div className="text-center space-y-3">
+        <div className="inline-block bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm mb-1">
+          <img
+            src="/logo.png"
+            alt="Fortelife Logo"
+            className="h-12 w-auto object-contain mx-auto"
+          />
         </div>
         <h1 className="text-2xl font-bold text-navy-900">Patient Registration</h1>
         <p className="text-xs sm:text-sm text-slate-600">
-          Create your digital clinic profile for faster appointment check-in across Ghana
+          Create your Fortelife profile for faster hospital check-in across Ghana
         </p>
       </div>
 

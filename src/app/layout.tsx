@@ -7,9 +7,14 @@ import { ScamBanner } from "@/components/ScamBanner";
 import { ShieldCheck, HeartHandshake } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Ghana Hospital Appointment System | Ghana Health Service",
+  title: "Fortelife | Hospital Bookings & Health - Ghana's Healthcare Partner",
   description:
-    "Official, low-data healthcare appointment booking system compliant with Ghana Data Protection Act (Act 843). Accessible for public and private clinics across Ghana.",
+    "Official low-data healthcare appointment booking system compliant with Ghana Data Protection Act (Act 843). Accessible for public and private clinics across Ghana.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default async function RootLayout({

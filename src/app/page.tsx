@@ -36,9 +36,9 @@ export default function HomePage({
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-navy-900 to-navy-800 text-white rounded-2xl p-6 sm:p-10 shadow-lg relative overflow-hidden">
         <div className="relative z-10 max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 border border-teal-400/30 text-teal-300 text-xs font-semibold">
-            <Activity className="w-3.5 h-3.5" />
-            Official Ghana Health Service Online Booking System
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-teal-300 text-xs font-semibold backdrop-blur-sm">
+            <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+            Fortelife • Ghana&apos;s Healthcare Booking Partner
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
