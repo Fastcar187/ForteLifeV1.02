@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { SessionUser } from "@/lib/types";
 import { logoutAction } from "@/lib/actions";
@@ -30,10 +31,13 @@ export function Navbar({ user }: Props) {
           {/* Logo Brand */}
           <Link href="/" className="flex items-center gap-3">
             <div className="h-10 bg-white px-2 py-0.5 rounded-lg flex items-center justify-center shadow-sm">
-              <img
+              <Image
                 src="/logo.png"
                 alt="Fortelife - Hospital Bookings & Health"
+                width={120}
+                height={32}
                 className="h-8 w-auto object-contain"
+                priority
               />
             </div>
             <div className="hidden sm:block">

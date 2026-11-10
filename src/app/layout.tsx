@@ -23,12 +23,17 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getSession();
+  const showDemoSwitcher =
+    process.env.NODE_ENV !== "production" ||
+    process.env.ENABLE_DEMO_MODE === "true";
 
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-alabaster text-navy-950 font-sans selection:bg-teal-500 selection:text-white">
         <ScamBanner />
-        <DevRoleSwitcher currentRole={session?.role} currentEmail={session?.email} />
+        {showDemoSwitcher && (
+          <DevRoleSwitcher currentRole={session?.role} currentEmail={session?.email} />
+        )}
         <Navbar user={session} />
 
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

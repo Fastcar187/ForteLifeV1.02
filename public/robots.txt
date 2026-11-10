@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /auth/login
+Allow: /auth/register
+Disallow: /patient/
+Disallow: /doctor/
+Disallow: /frontdesk/
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://fortelife.gh/sitemap.xml

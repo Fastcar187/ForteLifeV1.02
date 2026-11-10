@@ -241,6 +241,10 @@ export async function logoutAction() {
 
 // --- Demo Role Switcher (For instant evaluation & testing) ---
 export async function switchDemoRoleAction(role: UserRole) {
+  if (process.env.NODE_ENV === "production" && process.env.ENABLE_DEMO_MODE !== "true") {
+    throw new Error("Demo role switcher is disabled in production");
+  }
+
   let user: any = null;
   let facilityId: string | null = null;
   let facilityName: string | null = null;

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { registerPatientAction } from "@/lib/actions";
 import { ShieldCheck, UserCheck, AlertCircle, Smartphone, Lock, Mail, CreditCard } from "lucide-react";
 
@@ -29,10 +30,13 @@ export default function RegisterPage() {
     <div className="max-w-lg mx-auto my-8 space-y-6">
       <div className="text-center space-y-3">
         <div className="inline-block bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm mb-1">
-          <img
+          <Image
             src="/logo.png"
             alt="Fortelife Logo"
+            width={160}
+            height={48}
             className="h-12 w-auto object-contain mx-auto"
+            priority
           />
         </div>
         <h1 className="text-2xl font-bold text-navy-900">Patient Registration</h1>

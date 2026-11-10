@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { loginAction } from "@/lib/actions";
 import { Lock, Mail, ShieldCheck, AlertCircle } from "lucide-react";
@@ -182,10 +183,13 @@ export default function LoginPage() {
     <div className="max-w-md mx-auto my-8 space-y-6">
       <div className="text-center space-y-3">
         <div className="inline-block bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm mb-1">
-          <img
+          <Image
             src="/logo.png"
             alt="Fortelife Logo"
+            width={160}
+            height={48}
             className="h-12 w-auto object-contain mx-auto"
+            priority
           />
         </div>
         <h1 className="text-2xl font-bold text-navy-900">Sign in to Fortelife</h1>
