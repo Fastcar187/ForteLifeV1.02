@@ -533,6 +533,24 @@ class DataStore {
     return { user, patient };
   }
 
+  findOrCreateGoogleUser(data: { email: string; fullName: string }): { user: User; fullName: string } {
+    const existing = this.users.find((u) => u.email.toLowerCase() === data.email.toLowerCase());
+    if (existing) {
+      const patient = this.patients.find((p) => p.userId === existing.id);
+      return { user: existing, fullName: patient?.fullName || data.fullName };
+    }
+
+    const { user, patient } = this.registerPatient({
+      fullName: data.fullName || data.email.split("@")[0],
+      email: data.email,
+      phone: "+233000000000",
+      passwordHash: "",
+      notificationChannel: "whatsapp",
+    });
+
+    return { user, fullName: patient.fullName };
+  }
+
   updatePatientProfile(
     userId: string,
     data: {
