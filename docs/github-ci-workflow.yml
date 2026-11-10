@@ -1,0 +1,65 @@
+# GitHub Actions CI/CD Workflow Template
+# To enable automated CI in your repository:
+# 1. In your GitHub repository, go to Settings -> Secrets and variables -> Actions
+# 2. Add secrets: ENCRYPTION_KEY, SESSION_SECRET, DIRECT_DATABASE_URL
+# 3. Add this file to .github/workflows/ci.yml
+
+name: Ghana Hospital Appointment System CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Lint, TypeCheck & Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: TypeScript TypeCheck
+        run: npx tsc --noEmit
+
+      - name: Run Next.js Build
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY || '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef' }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET || 'development-jwt-secret-key-32-chars-long-for-testing' }}
+        run: npm run build
+
+      - name: Security Audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  migrate-neon:
+    name: Neon Production Schema & RLS Migration
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Migrator Database Migration
+        env:
+          DIRECT_DATABASE_URL: ${{ secrets.DIRECT_DATABASE_URL }}
+        run: npm run db:migrate
