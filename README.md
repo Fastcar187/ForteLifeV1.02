@@ -81,15 +81,29 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🧪 Testing the 5 Roles with the Interactive Switcher
+## 🧪 Testing the 5 Roles & Two-Factor Authentication
 
-Use the top banner bar to switch identities with one click:
-- **Patient**: `kwame.mensah@example.com` (Kwame Mensah)
-- **Front Desk**: `frontdesk.ridge@ghanahealth.gov.gh` (Akua Adjei - Ridge Hospital)
+You can log in directly at `/auth/login` or use the top banner bar to switch identities with one click:
+- **Patient**: `kwame.mensah@example.com` (Kwame Mensah) &rarr; Direct login to `/patient/dashboard`
+- **Front Desk**: `frontdesk.ridge@ghanahealth.gov.gh` (Akua Adjei - Ridge Hospital) &rarr; Direct login to `/frontdesk/dashboard`
 - **Doctor (MFA)**: `dr.boateng@ghanahealth.gov.gh` (Dr. Emmanuel Boateng)
 - **Facility Admin**: `admin.ridge@ghanahealth.gov.gh` (Dr. Grace Osei)
 - **Platform Admin**: `director@ghanahealth.gov.gh` (Ministry Director)
-- **Default password**: `Password123!`
+- **Password for all seeded accounts**: `Password123!`
+
+### 🔑 Google Authenticator (TOTP 2FA for Clinical Staff)
+Seeded Doctor and Admin accounts enforce RFC 6238 two-factor authentication:
+* **Manual Setup Key for Phone App**: `JBSWY3DPEHPK3PXP` (Google Authenticator &rarr; **+** &rarr; **Enter a setup key** &rarr; Time-based)
+* **Single-Use Backup Code**: `GH72-BACKUP1` (Click *"Use Backup Code"* on the 2FA challenge screen for instant access)
+
+### 🌐 Google OAuth 2.0 (Sign in with Google)
+1-click patient registration and login with Google is integrated on `/auth/login` and `/auth/register`.
+To connect your Google Cloud credentials, set:
+```env
+GOOGLE_CLIENT_ID="your_client_id.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="GOCSPX-your_client_secret"
+```
+Authorized redirect URI: `http://localhost:3000/api/auth/google/callback`
 
 ---
 
