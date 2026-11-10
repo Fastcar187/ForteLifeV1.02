@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { getSession } from "@/lib/session";
 import { Navbar } from "@/components/Navbar";
@@ -6,10 +6,19 @@ import { DevRoleSwitcher } from "@/components/DevRoleSwitcher";
 import { ScamBanner } from "@/components/ScamBanner";
 import { ShieldCheck, HeartHandshake } from "lucide-react";
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#0F2942",
+};
+
 export const metadata: Metadata = {
   title: "Fortelife | Hospital Bookings & Health - Ghana's Healthcare Partner",
   description:
     "Official low-data healthcare appointment booking system compliant with Ghana Data Protection Act (Act 843). Accessible for public and private clinics across Ghana.",
+  manifest: "/manifest.json",
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",

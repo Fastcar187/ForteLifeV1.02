@@ -60,8 +60,8 @@ export function DevRoleSwitcher({ currentRole, currentEmail }: Props) {
           </span>
         </div>
 
-        <div className="flex items-center flex-wrap gap-1">
-          <span className="text-slate-400 mr-1 hidden sm:inline">Switch Role:</span>
+        <div className="flex items-center gap-1 overflow-x-auto max-w-full pb-1 sm:pb-0 scrollbar-none">
+          <span className="text-slate-400 mr-1 hidden sm:inline whitespace-nowrap">Switch Role:</span>
           {roles.map((item) => {
             const Icon = item.icon;
             const isActive = currentRole === item.role;
@@ -74,7 +74,7 @@ export function DevRoleSwitcher({ currentRole, currentEmail }: Props) {
                   });
                 }}
                 disabled={isPending}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs transition-colors font-medium ${
+                className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs transition-colors font-medium whitespace-nowrap flex-shrink-0 ${
                   isActive
                     ? "bg-teal-600 text-white shadow-sm"
                     : "bg-navy-900 text-slate-300 hover:bg-navy-800 hover:text-white"

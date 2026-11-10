@@ -1,0 +1,24 @@
+{
+  "name": "Fortelife - Hospital Bookings & Health",
+  "short_name": "Fortelife",
+  "description": "Ghana's Healthcare Partner - Official low-data hospital appointment booking system compliant with Ghana Data Protection Act (Act 843).",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F2942",
+  "theme_color": "#0F2942",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
