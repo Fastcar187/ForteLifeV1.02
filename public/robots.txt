@@ -9,3 +9,4 @@ Disallow: /admin/
 Disallow: /api/
 
 Sitemap: https://fortelife.gh/sitemap.xml
+
