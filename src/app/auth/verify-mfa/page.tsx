@@ -9,6 +9,7 @@ export default function VerifyMfaPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
+  const [backupCode, setBackupCode] = useState("");
 
   const handleMfaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,18 +87,39 @@ export default function VerifyMfaPage() {
               <ArrowRight className="w-4 h-4" />
             </button>
 
-            {/* Dev helper note */}
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-slate-600 text-[11px] space-y-1">
-              <span className="font-semibold text-navy-900">Demo Testing Note:</span>
-              <p>
-                In demo mode with seeded doctors and admins, you can switch roles directly using the top switcher toolbar, or use backup code <code>GH72-BACKUP1</code> below!
+            {/* Google Authenticator Setup & Demo Helpers */}
+            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-slate-600 text-xs space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-navy-900">Google Authenticator Setup Key:</span>
+                <span className="px-2 py-0.5 bg-teal-50 text-teal-700 font-mono font-bold rounded border border-teal-200 text-[11px]">
+                  JBSWY3DPEHPK3PXP
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                In your Google Authenticator app, tap <strong>+</strong> &rarr; <strong>Enter a setup key</strong>, enter key <code className="bg-slate-200 px-1 py-0.5 rounded font-mono font-semibold text-slate-800">JBSWY3DPEHPK3PXP</code>, and choose <strong>Time-based</strong>.
               </p>
+              <div className="pt-1.5 border-t border-slate-200 flex items-center justify-between text-[11px]">
+                <span className="text-slate-500">Or bypass with backup code:</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUseBackup(true);
+                    setBackupCode("GH72-BACKUP1");
+                  }}
+                  className="text-teal-600 font-semibold hover:underline"
+                >
+                  Use Backup Code (GH72-BACKUP1) &rarr;
+                </button>
+              </div>
             </div>
 
             <div className="text-center pt-2">
               <button
                 type="button"
-                onClick={() => setUseBackup(true)}
+                onClick={() => {
+                  setUseBackup(true);
+                  setBackupCode("GH72-BACKUP1");
+                }}
                 className="text-xs text-teal-600 hover:underline font-semibold"
               >
                 Lost authenticator? Use single-use backup code
@@ -107,13 +129,24 @@ export default function VerifyMfaPage() {
         ) : (
           <form onSubmit={handleBackupSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-700">
-                Enter Single-Use Backup Code
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-semibold text-slate-700">
+                  Enter Single-Use Backup Code
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setBackupCode("GH72-BACKUP1")}
+                  className="text-[11px] text-teal-600 font-medium hover:underline"
+                >
+                  Autofill GH72-BACKUP1
+                </button>
+              </div>
               <input
                 type="text"
                 name="backupCode"
                 required
+                value={backupCode}
+                onChange={(e) => setBackupCode(e.target.value.toUpperCase())}
                 placeholder="e.g. GH72-BACKUP1"
                 className="w-full text-center tracking-wider text-lg font-mono py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 font-semibold"
               />
