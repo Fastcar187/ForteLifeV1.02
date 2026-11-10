@@ -89,12 +89,15 @@ const INITIAL_SERVICES: MedicalService[] = [
 ];
 
 // Pre-seeded Users across all 5 roles
+// Default Password for all pre-seeded accounts: Password123!
+const VALID_DEMO_PASSWORD_HASH = "$2a$10$gyUwQkaPFZS2l6qdaTmj.Oz0N/rkY6L/TTVY/xH3lqWA/K1U3OcZu";
+
 const INITIAL_USERS: User[] = [
   {
     id: "usr-patient-1",
     role: "patient",
     email: "kwame.mensah@example.com",
-    passwordHash: "$2a$10$wT/iG6l1Yk49jE2/v4qKqeuB9qgVbE3oJgXW2Vd9U1.8r8z6Z5K.6", // Password123!
+    passwordHash: VALID_DEMO_PASSWORD_HASH,
     phoneEnc: encrypt("+233244123456"),
     phoneHash: blindIndex("+233244123456"),
     failedLoginCount: 0,
@@ -104,7 +107,7 @@ const INITIAL_USERS: User[] = [
     id: "usr-frontdesk-1",
     role: "frontdesk",
     email: "frontdesk.ridge@ghanahealth.gov.gh",
-    passwordHash: "$2a$10$wT/iG6l1Yk49jE2/v4qKqeuB9qgVbE3oJgXW2Vd9U1.8r8z6Z5K.6",
+    passwordHash: VALID_DEMO_PASSWORD_HASH,
     phoneEnc: encrypt("+233201234567"),
     phoneHash: blindIndex("+233201234567"),
     failedLoginCount: 0,
@@ -114,7 +117,7 @@ const INITIAL_USERS: User[] = [
     id: "usr-doctor-1",
     role: "doctor",
     email: "dr.boateng@ghanahealth.gov.gh",
-    passwordHash: "$2a$10$wT/iG6l1Yk49jE2/v4qKqeuB9qgVbE3oJgXW2Vd9U1.8r8z6Z5K.6",
+    passwordHash: VALID_DEMO_PASSWORD_HASH,
     phoneEnc: encrypt("+233277890123"),
     phoneHash: blindIndex("+233277890123"),
     failedLoginCount: 0,
@@ -124,7 +127,7 @@ const INITIAL_USERS: User[] = [
     id: "usr-facadmin-1",
     role: "facility_admin",
     email: "admin.ridge@ghanahealth.gov.gh",
-    passwordHash: "$2a$10$wT/iG6l1Yk49jE2/v4qKqeuB9qgVbE3oJgXW2Vd9U1.8r8z6Z5K.6",
+    passwordHash: VALID_DEMO_PASSWORD_HASH,
     phoneEnc: encrypt("+233245678901"),
     phoneHash: blindIndex("+233245678901"),
     failedLoginCount: 0,
@@ -134,7 +137,7 @@ const INITIAL_USERS: User[] = [
     id: "usr-platformadmin-1",
     role: "platform_admin",
     email: "director@ghanahealth.gov.gh",
-    passwordHash: "$2a$10$wT/iG6l1Yk49jE2/v4qKqeuB9qgVbE3oJgXW2Vd9U1.8r8z6Z5K.6",
+    passwordHash: VALID_DEMO_PASSWORD_HASH,
     phoneEnc: encrypt("+233501239876"),
     phoneHash: blindIndex("+233501239876"),
     failedLoginCount: 0,
