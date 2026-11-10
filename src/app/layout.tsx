@@ -4,7 +4,7 @@ import { getSession } from "@/lib/session";
 import { Navbar } from "@/components/Navbar";
 import { DevRoleSwitcher } from "@/components/DevRoleSwitcher";
 import { ScamBanner } from "@/components/ScamBanner";
-import { ShieldCheck, HeartHandshake } from "lucide-react";
+import { ShieldCheck, HeartHandshake, FileDown } from "lucide-react";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   title: "Fortelife | Hospital Bookings & Health - Ghana's Healthcare Partner",
   description:
     "Official low-data healthcare appointment booking system compliant with Ghana Data Protection Act (Act 843). Accessible for public and private clinics across Ghana.",
+  manifest: "/manifest.json",
   manifest: "/manifest.json",
   icons: {
     icon: "/logo.png",
@@ -63,7 +64,7 @@ export default async function RootLayout({
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-center md:text-right">
+            <div className="flex flex-col sm:flex-row items-center gap-3 text-center md:text-right">
               <div>
                 <p className="text-slate-300 font-medium">
                   Optimized for Ghana 3G Networks
@@ -72,6 +73,15 @@ export default async function RootLayout({
                   Zero heavy assets • Offline clinic queue print fallback enabled
                 </p>
               </div>
+              <a
+                href="/Fortelife_Documentation.pdf"
+                download="Fortelife_Full_Documentation.pdf"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-teal-300 hover:text-white border border-navy-700 transition-colors text-[11px] font-medium"
+                title="Download complete technical and clinical system documentation (PDF)"
+              >
+                <FileDown className="w-4 h-4 text-teal-400" />
+                <span>Documentation (PDF)</span>
+              </a>
             </div>
           </div>
         </footer>
