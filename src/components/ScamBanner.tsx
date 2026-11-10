@@ -12,3 +12,4 @@ export function ScamBanner() {
     </div>
   );
 }
+

@@ -136,3 +136,4 @@ export function AppointmentListClient({ appointments }: { appointments: Appointm
     </div>
   );
 }
+

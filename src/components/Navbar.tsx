@@ -201,3 +201,4 @@ export function Navbar({ user }: Props) {
     </header>
   );
 }
+

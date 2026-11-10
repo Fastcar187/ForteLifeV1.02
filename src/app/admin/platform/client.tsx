@@ -289,3 +289,4 @@ export function PlatformAdminClient({ facilities, auditLogs, metrics }: Props) {
     </div>
   );
 }
+

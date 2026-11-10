@@ -144,3 +144,4 @@ export function DoctorDashboardClient({ queue }: { queue: DoctorQueueItem[] }) {
     </div>
   );
 }
+

@@ -29,3 +29,4 @@ export async function runMigrations() {
 if (require.main === module) {
   runMigrations();
 }
+

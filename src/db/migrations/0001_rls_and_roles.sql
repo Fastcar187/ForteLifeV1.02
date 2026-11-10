@@ -106,3 +106,4 @@ LEFT JOIN appointments a ON a.facility_id = f.id
 GROUP BY f.id, f.name, f.region;
 
 GRANT SELECT ON view_operational_metrics TO reporter;
+

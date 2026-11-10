@@ -1005,3 +1005,4 @@ const globalStore = new DataStore();
 export function getDataStore(): DataStore {
   return globalStore;
 }
+

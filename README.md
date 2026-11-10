@@ -98,3 +98,4 @@ SQL migration file: `src/db/migrations/0001_rls_and_roles.sql`
 - `app_user`: Next.js connection pool user. RLS strictly enforced via `set_config('app.user_id', ...)` inside `withSecureTransaction`.
 - `reporter`: Read-only aggregate operational metrics view (`view_operational_metrics`).
 - `audit_log`: Append-only (`REVOKE UPDATE, DELETE ON audit_log FROM app_user;`).
+

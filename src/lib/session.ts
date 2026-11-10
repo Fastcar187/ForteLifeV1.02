@@ -33,3 +33,4 @@ export async function destroySession(): Promise<void> {
     maxAge: 0,
   });
 }
+

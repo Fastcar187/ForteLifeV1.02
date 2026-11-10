@@ -11,3 +11,4 @@ export async function seed() {
 if (require.main === module) {
   seed();
 }
+

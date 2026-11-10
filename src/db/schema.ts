@@ -223,3 +223,4 @@ export const appointmentsRelations = relations(appointments, ({ one }) => ({
     references: [slots.id],
   }),
 }));
+
