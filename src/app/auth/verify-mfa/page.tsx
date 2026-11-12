@@ -95,29 +95,6 @@ export default function VerifyMfaPage() {
               <ArrowRight className="w-4 h-4" />
             </button>
 
-            {/* Test 2FA Credential Helper */}
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1.5">
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="font-semibold text-slate-700">Demo Setup Key:</span>
-                <code className="px-1.5 py-0.5 bg-teal-50 text-teal-800 rounded font-mono font-bold border border-teal-200">
-                  JBSWY3DPEHPK3PXP
-                </code>
-              </div>
-              <div className="flex items-center justify-between text-[11px] pt-1 border-t border-slate-200">
-                <span className="text-slate-500">Need instant access?</span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setUseBackup(true);
-                    setBackupCode("GH72-BACKUP1");
-                  }}
-                  className="text-teal-600 font-semibold hover:underline"
-                >
-                  Use Backup Code (GH72-BACKUP1) &rarr;
-                </button>
-              </div>
-            </div>
-
             <div className="text-center pt-1 border-t border-slate-100">
               <button
                 type="button"
@@ -134,18 +111,9 @@ export default function VerifyMfaPage() {
         ) : (
           <form onSubmit={handleBackupSubmit} className="space-y-5">
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-semibold text-slate-700">
-                  Enter Single-Use Backup Code
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setBackupCode("GH72-BACKUP1")}
-                  className="text-[11px] text-teal-600 font-semibold hover:underline"
-                >
-                  Fill GH72-BACKUP1
-                </button>
-              </div>
+              <label className="block text-xs font-semibold text-slate-700">
+                Enter Single-Use Backup Code
+              </label>
               <input
                 type="text"
                 name="backupCode"
