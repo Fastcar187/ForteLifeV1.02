@@ -87,7 +87,30 @@ export default function VerifyMfaPage() {
               <ArrowRight className="w-4 h-4" />
             </button>
 
-            <div className="text-center pt-2 border-t border-slate-100">
+            {/* Test 2FA Credential Helper */}
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1.5">
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="font-semibold text-slate-700">Demo Setup Key:</span>
+                <code className="px-1.5 py-0.5 bg-teal-50 text-teal-800 rounded font-mono font-bold border border-teal-200">
+                  JBSWY3DPEHPK3PXP
+                </code>
+              </div>
+              <div className="flex items-center justify-between text-[11px] pt-1 border-t border-slate-200">
+                <span className="text-slate-500">Need instant access?</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUseBackup(true);
+                    setBackupCode("GH72-BACKUP1");
+                  }}
+                  className="text-teal-600 font-semibold hover:underline"
+                >
+                  Use Backup Code (GH72-BACKUP1) &rarr;
+                </button>
+              </div>
+            </div>
+
+            <div className="text-center pt-1 border-t border-slate-100">
               <button
                 type="button"
                 onClick={() => {
@@ -107,6 +130,13 @@ export default function VerifyMfaPage() {
                 <label className="block text-xs font-semibold text-slate-700">
                   Enter Single-Use Backup Code
                 </label>
+                <button
+                  type="button"
+                  onClick={() => setBackupCode("GH72-BACKUP1")}
+                  className="text-[11px] text-teal-600 font-semibold hover:underline"
+                >
+                  Fill GH72-BACKUP1
+                </button>
               </div>
               <input
                 type="text"
@@ -114,7 +144,7 @@ export default function VerifyMfaPage() {
                 required
                 value={backupCode}
                 onChange={(e) => setBackupCode(e.target.value.toUpperCase())}
-                placeholder="XXXX-XXXXXX"
+                placeholder="e.g. GH72-BACKUP1"
                 className="w-full text-center tracking-wider text-lg font-mono py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 font-semibold"
               />
               <p className="text-[11px] text-slate-500 text-center">

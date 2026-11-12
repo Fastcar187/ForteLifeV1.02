@@ -21,6 +21,12 @@ function LoginForm() {
     }
   }, [urlError]);
 
+  const handleFillDemo = (demoEmail: string) => {
+    setEmail(demoEmail);
+    setPassword("Password123!");
+    setError(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -124,6 +130,73 @@ function LoginForm() {
           {loading ? "Authenticating..." : "Sign In"}
         </button>
       </form>
+
+      {/* Demo / Evaluation Test Accounts */}
+      <div className="pt-4 border-t border-slate-100 space-y-2.5">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold text-navy-900">Demo Login Accounts</span>
+          <span className="text-[11px] text-teal-800 bg-teal-50 px-2 py-0.5 rounded font-mono font-medium border border-teal-200">
+            Password: Password123!
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          <button
+            type="button"
+            onClick={() => handleFillDemo("kwame.mensah@example.com")}
+            className="p-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-left border border-slate-200 transition-colors flex items-center justify-between group"
+          >
+            <div>
+              <div className="font-semibold text-navy-950">Kwame Mensah</div>
+              <div className="text-[11px] text-slate-500">Patient</div>
+            </div>
+            <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleFillDemo("frontdesk.ridge@ghanahealth.gov.gh")}
+            className="p-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-left border border-slate-200 transition-colors flex items-center justify-between group"
+          >
+            <div>
+              <div className="font-semibold text-navy-950">Akua Adjei</div>
+              <div className="text-[11px] text-slate-500">Front Desk (Ridge)</div>
+            </div>
+            <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleFillDemo("dr.boateng@ghanahealth.gov.gh")}
+            className="p-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-left border border-slate-200 transition-colors flex items-center justify-between group"
+          >
+            <div>
+              <div className="font-semibold text-navy-950">Dr. Boateng</div>
+              <div className="text-[11px] text-slate-500">Doctor (2FA Required)</div>
+            </div>
+            <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleFillDemo("admin.ridge@ghanahealth.gov.gh")}
+            className="p-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-left border border-slate-200 transition-colors flex items-center justify-between group"
+          >
+            <div>
+              <div className="font-semibold text-navy-950">Dr. Grace Osei</div>
+              <div className="text-[11px] text-slate-500">Facility Admin (2FA)</div>
+            </div>
+            <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleFillDemo("director@ghanahealth.gov.gh")}
+            className="sm:col-span-2 p-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-left border border-slate-200 transition-colors flex items-center justify-between group"
+          >
+            <div>
+              <div className="font-semibold text-navy-950">Ministry Director</div>
+              <div className="text-[11px] text-slate-500">National Platform Admin (2FA Required)</div>
+            </div>
+            <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
+          </button>
+        </div>
+      </div>
 
       <div className="text-center pt-2 border-t border-slate-100 text-xs text-slate-600">
         Don&apos;t have an account?{" "}
