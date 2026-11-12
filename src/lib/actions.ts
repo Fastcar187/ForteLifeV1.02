@@ -69,29 +69,16 @@ export async function loginAction(formData: FormData) {
   // Check MFA Requirement for Staff/Admins
   if (isMfaRequired(user.role)) {
     const mfa = store.getMfaSecret(user.id);
-    if (!mfa || !mfa.isEnrolled) {
-      // Must enroll in MFA first
-      const sessionUser: SessionUser = {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        fullName: resolvedFullName,
-        isMfaEnrolled: false,
-      };
-      await setSession(sessionUser);
-      redirect("/auth/enroll-mfa");
-    } else {
-      // Redirect to MFA verification challenge
-      const sessionUser: SessionUser = {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        fullName: resolvedFullName,
-        isMfaEnrolled: false, // Temporary until 6-digit code verified
-      };
-      await setSession(sessionUser);
-      redirect("/auth/verify-mfa");
-    }
+    const targetUrl = !mfa || !mfa.isEnrolled ? "/auth/enroll-mfa" : "/auth/verify-mfa";
+    const sessionUser: SessionUser = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      fullName: resolvedFullName,
+      isMfaEnrolled: false,
+    };
+    await setSession(sessionUser);
+    return { success: true, redirectUrl: targetUrl };
   }
 
   // Patient or Front Desk (direct login)
@@ -116,14 +103,32 @@ export async function loginAction(formData: FormData) {
   await setSession(sessionUser);
   store.recordAudit("USER_LOGIN", "users", user.id, sessionUser, { method: "password" });
 
-  if (user.role === "patient") redirect("/patient/dashboard");
-  if (user.role === "frontdesk") redirect("/frontdesk/dashboard");
-  redirect("/");
+  let targetUrl = "/";
+  if (user.role === "patient") targetUrl = "/patient/dashboard";
+  if (user.role === "frontdesk") targetUrl = "/frontdesk/dashboard";
+  if (user.role === "doctor") targetUrl = "/doctor/dashboard";
+  if (user.role === "facility_admin") targetUrl = "/admin/facility";
+  if (user.role === "platform_admin") targetUrl = "/admin/platform";
+
+  const returnUrl = (formData.get("returnUrl") as string) || "";
+  if (returnUrl && returnUrl.startsWith("/") && !returnUrl.startsWith("//") && !returnUrl.startsWith("/auth")) {
+    if (
+      (user.role === "patient" && returnUrl.startsWith("/patient")) ||
+      (user.role === "frontdesk" && returnUrl.startsWith("/frontdesk")) ||
+      (user.role === "doctor" && returnUrl.startsWith("/doctor")) ||
+      (user.role === "facility_admin" && returnUrl.startsWith("/admin/facility")) ||
+      (user.role === "platform_admin" && (returnUrl.startsWith("/admin/platform") || returnUrl.startsWith("/admin")))
+    ) {
+      targetUrl = returnUrl;
+    }
+  }
+
+  return { success: true, redirectUrl: targetUrl };
 }
 
 export async function verifyMfaAction(formData: FormData) {
   const session = await getSession();
-  if (!session) redirect("/auth/login");
+  if (!session) return { error: "Session expired. Please sign in again.", redirectUrl: "/auth/login" };
 
   const code = formData.get("code") as string;
   const parsed = verifyMfaSchema.safeParse({ code });
@@ -157,15 +162,17 @@ export async function verifyMfaAction(formData: FormData) {
   await setSession(elevatedSession);
   store.recordAudit("MFA_CHALLENGE_VERIFIED", "users", session.id, elevatedSession, { method: "totp" });
 
-  if (session.role === "doctor") redirect("/doctor/dashboard");
-  if (session.role === "facility_admin") redirect("/admin/facility");
-  if (session.role === "platform_admin") redirect("/admin/platform");
-  redirect("/");
+  let targetUrl = "/";
+  if (session.role === "doctor") targetUrl = "/doctor/dashboard";
+  if (session.role === "facility_admin") targetUrl = "/admin/facility";
+  if (session.role === "platform_admin") targetUrl = "/admin/platform";
+
+  return { success: true, redirectUrl: targetUrl };
 }
 
 export async function verifyBackupCodeAction(formData: FormData) {
   const session = await getSession();
-  if (!session) redirect("/auth/login");
+  if (!session) return { error: "Session expired. Please sign in again.", redirectUrl: "/auth/login" };
 
   const raw = formData.get("backupCode") as string;
   const parsed = verifyBackupCodeSchema.safeParse({ backupCode: raw });
@@ -193,10 +200,12 @@ export async function verifyBackupCodeAction(formData: FormData) {
   await setSession(elevatedSession);
   store.recordAudit("MFA_BACKUP_CODE_LOGIN", "users", session.id, elevatedSession);
 
-  if (session.role === "doctor") redirect("/doctor/dashboard");
-  if (session.role === "facility_admin") redirect("/admin/facility");
-  if (session.role === "platform_admin") redirect("/admin/platform");
-  redirect("/");
+  let targetUrl = "/";
+  if (session.role === "doctor") targetUrl = "/doctor/dashboard";
+  if (session.role === "facility_admin") targetUrl = "/admin/facility";
+  if (session.role === "platform_admin") targetUrl = "/admin/platform";
+
+  return { success: true, redirectUrl: targetUrl };
 }
 
 export async function registerUserAction(formData: FormData) {
@@ -255,7 +264,7 @@ export async function registerUserAction(formData: FormData) {
       isMfaEnrolled: false,
     };
     await setSession(sessionUser);
-    redirect("/auth/enroll-mfa");
+    return { success: true, redirectUrl: "/auth/enroll-mfa" };
   }
 
   const sessionUser: SessionUser = {
@@ -269,9 +278,10 @@ export async function registerUserAction(formData: FormData) {
   };
 
   await setSession(sessionUser);
-  if (user.role === "patient") redirect("/patient/dashboard");
-  if (user.role === "frontdesk") redirect("/frontdesk/dashboard");
-  redirect("/");
+  let targetUrl = "/";
+  if (user.role === "patient") targetUrl = "/patient/dashboard";
+  if (user.role === "frontdesk") targetUrl = "/frontdesk/dashboard";
+  return { success: true, redirectUrl: targetUrl };
 }
 
 export async function registerPatientAction(formData: FormData) {

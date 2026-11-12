@@ -21,6 +21,10 @@ export default function VerifyMfaPage() {
     if (result?.error) {
       setError(result.error);
       setLoading(false);
+      return;
+    }
+    if (result?.redirectUrl) {
+      window.location.href = result.redirectUrl;
     }
   };
 
@@ -34,6 +38,10 @@ export default function VerifyMfaPage() {
     if (result?.error) {
       setError(result.error);
       setLoading(false);
+      return;
+    }
+    if (result?.redirectUrl) {
+      window.location.href = result.redirectUrl;
     }
   };
 

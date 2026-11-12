@@ -10,6 +10,7 @@ import { Lock, Mail, ShieldCheck, AlertCircle } from "lucide-react";
 function LoginForm() {
   const searchParams = useSearchParams();
   const urlError = searchParams.get("error");
+  const returnUrl = searchParams.get("returnUrl");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -33,11 +34,19 @@ function LoginForm() {
     setError(null);
 
     const formData = new FormData(e.currentTarget);
+    if (returnUrl) {
+      formData.set("returnUrl", returnUrl);
+    }
     const result = await loginAction(formData);
 
     if (result?.error) {
       setError(result.error);
       setLoading(false);
+      return;
+    }
+
+    if (result?.redirectUrl) {
+      window.location.href = result.redirectUrl;
     }
   };
 

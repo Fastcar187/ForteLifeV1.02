@@ -19,6 +19,10 @@ export function MfaEnrollmentClient() {
     if (result?.error) {
       setError(result.error);
       setLoading(false);
+      return;
+    }
+    if (result?.redirectUrl) {
+      window.location.href = result.redirectUrl;
     }
   };
 
