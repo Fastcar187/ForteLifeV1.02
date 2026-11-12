@@ -96,24 +96,57 @@ export async function seed() {
     const ridgeOpdId = crypto.randomUUID();
     const ridgeMatId = crypto.randomUUID();
     const kbOpdId = crypto.randomUUID();
+    const kathOpdId = crypto.randomUUID();
+    const tamaleOpdId = crypto.randomUUID();
+    const hoOpdId = crypto.randomUUID();
 
     await db.insert(schema.services).values([
       { id: ridgeOpdId, facilityId: ridgeId, name: "General OPD Consultation", durationMinutes: 20, isActive: true },
       { id: ridgeMatId, facilityId: ridgeId, name: "Maternity & Family Planning", durationMinutes: 30, isActive: true },
       { id: kbOpdId, facilityId: korleBuId, name: "General Outpatient (OPD)", durationMinutes: 20, isActive: true },
+      { id: kathOpdId, facilityId: kathId, name: "General Medicine OPD", durationMinutes: 20, isActive: true },
+      { id: tamaleOpdId, facilityId: tamaleId, name: "General OPD", durationMinutes: 20, isActive: true },
+      { id: hoOpdId, facilityId: hoId, name: "General Outpatient Consultation", durationMinutes: 20, isActive: true },
     ]);
 
-    console.log("Seeding users & clinical staff across 5 roles...");
+    console.log("Seeding users & clinical staff across all 5 roles and hospitals...");
     // Password123!
     const defaultPasswordHash = "$2a$10$gyUwQkaPFZS2l6qdaTmj.Oz0N/rkY6L/TTVY/xH3lqWA/K1U3OcZu";
 
     const patientUserId = crypto.randomUUID();
+    const patient2UserId = crypto.randomUUID();
+    const patient3UserId = crypto.randomUUID();
+
+    // Ridge
     const frontdeskUserId = crypto.randomUUID();
     const doctorUserId = crypto.randomUUID();
     const facAdminUserId = crypto.randomUUID();
+
+    // Korle Bu
+    const kbFrontdeskId = crypto.randomUUID();
+    const kbDoctorId = crypto.randomUUID();
+    const kbAdminId = crypto.randomUUID();
+
+    // KATH
+    const kathFrontdeskId = crypto.randomUUID();
+    const kathDoctorId = crypto.randomUUID();
+    const kathAdminId = crypto.randomUUID();
+
+    // Tamale
+    const tamaleFrontdeskId = crypto.randomUUID();
+    const tamaleDoctorId = crypto.randomUUID();
+    const tamaleAdminId = crypto.randomUUID();
+
+    // Ho
+    const hoFrontdeskId = crypto.randomUUID();
+    const hoDoctorId = crypto.randomUUID();
+    const hoAdminId = crypto.randomUUID();
+
+    // Platform Admin
     const platformAdminUserId = crypto.randomUUID();
 
     await db.insert(schema.users).values([
+      // Patients
       {
         id: patientUserId,
         role: "patient",
@@ -123,6 +156,25 @@ export async function seed() {
         phoneHash: blindIndex("+233244123456"),
         failedLoginCount: 0,
       },
+      {
+        id: patient2UserId,
+        role: "patient",
+        email: "ama.ofori@example.com",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233244987654"),
+        phoneHash: blindIndex("+233244987654"),
+        failedLoginCount: 0,
+      },
+      {
+        id: patient3UserId,
+        role: "patient",
+        email: "ibrahim.abdulai@example.com",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233208765432"),
+        phoneHash: blindIndex("+233208765432"),
+        failedLoginCount: 0,
+      },
+      // Ridge Hospital
       {
         id: frontdeskUserId,
         role: "frontdesk",
@@ -150,6 +202,119 @@ export async function seed() {
         phoneHash: blindIndex("+233245678901"),
         failedLoginCount: 0,
       },
+      // Korle Bu
+      {
+        id: kbFrontdeskId,
+        role: "frontdesk",
+        email: "frontdesk.korlebu@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233202345678"),
+        phoneHash: blindIndex("+233202345678"),
+        failedLoginCount: 0,
+      },
+      {
+        id: kbDoctorId,
+        role: "doctor",
+        email: "dr.owusu@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233243456789"),
+        phoneHash: blindIndex("+233243456789"),
+        failedLoginCount: 0,
+      },
+      {
+        id: kbAdminId,
+        role: "facility_admin",
+        email: "admin.korlebu@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233244567890"),
+        phoneHash: blindIndex("+233244567890"),
+        failedLoginCount: 0,
+      },
+      // KATH
+      {
+        id: kathFrontdeskId,
+        role: "frontdesk",
+        email: "frontdesk.kath@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233203456789"),
+        phoneHash: blindIndex("+233203456789"),
+        failedLoginCount: 0,
+      },
+      {
+        id: kathDoctorId,
+        role: "doctor",
+        email: "dr.agyeman@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233246789012"),
+        phoneHash: blindIndex("+233246789012"),
+        failedLoginCount: 0,
+      },
+      {
+        id: kathAdminId,
+        role: "facility_admin",
+        email: "admin.kath@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233247890123"),
+        phoneHash: blindIndex("+233247890123"),
+        failedLoginCount: 0,
+      },
+      // Tamale
+      {
+        id: tamaleFrontdeskId,
+        role: "frontdesk",
+        email: "frontdesk.tamale@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233204567890"),
+        phoneHash: blindIndex("+233204567890"),
+        failedLoginCount: 0,
+      },
+      {
+        id: tamaleDoctorId,
+        role: "doctor",
+        email: "dr.yakubu@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233248901234"),
+        phoneHash: blindIndex("+233248901234"),
+        failedLoginCount: 0,
+      },
+      {
+        id: tamaleAdminId,
+        role: "facility_admin",
+        email: "admin.tamale@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233249012345"),
+        phoneHash: blindIndex("+233249012345"),
+        failedLoginCount: 0,
+      },
+      // Ho
+      {
+        id: hoFrontdeskId,
+        role: "frontdesk",
+        email: "frontdesk.ho@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233205678901"),
+        phoneHash: blindIndex("+233205678901"),
+        failedLoginCount: 0,
+      },
+      {
+        id: hoDoctorId,
+        role: "doctor",
+        email: "dr.kpodo@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233240123456"),
+        phoneHash: blindIndex("+233240123456"),
+        failedLoginCount: 0,
+      },
+      {
+        id: hoAdminId,
+        role: "facility_admin",
+        email: "admin.ho@ghanahealth.gov.gh",
+        passwordHash: defaultPasswordHash,
+        phoneEnc: encrypt("+233241234560"),
+        phoneHash: blindIndex("+233241234560"),
+        failedLoginCount: 0,
+      },
+      // Platform Admin
       {
         id: platformAdminUserId,
         role: "platform_admin",
@@ -161,7 +326,7 @@ export async function seed() {
       },
     ]);
 
-    // Patient profile
+    // Patient profiles
     await db.insert(schema.patients).values([
       {
         userId: patientUserId,
@@ -170,9 +335,23 @@ export async function seed() {
         ghanaCardEnc: encrypt("GHA-726491029-4"),
         consentAcceptedAt: new Date(),
       },
+      {
+        userId: patient2UserId,
+        fullName: "Ama Serwaa Ofori",
+        nhisEnc: encrypt("58291044"),
+        ghanaCardEnc: encrypt("GHA-491827364-1"),
+        consentAcceptedAt: new Date(),
+      },
+      {
+        userId: patient3UserId,
+        fullName: "Ibrahim Abdulai",
+        nhisEnc: encrypt("39104825"),
+        ghanaCardEnc: encrypt("GHA-839201746-8"),
+        consentAcceptedAt: new Date(),
+      },
     ]);
 
-    // Staff profiles
+    // Staff profiles across all 5 hospitals
     await db.insert(schema.staff).values([
       {
         userId: frontdeskUserId,
@@ -195,49 +374,149 @@ export async function seed() {
         titleOrSpecialty: "Medical Superintendent & Operations Director",
         isActive: true,
       },
+      {
+        userId: kbFrontdeskId,
+        facilityId: korleBuId,
+        role: "frontdesk",
+        titleOrSpecialty: "Principal Admissions Officer",
+        isActive: true,
+      },
+      {
+        userId: kbDoctorId,
+        facilityId: korleBuId,
+        role: "doctor",
+        titleOrSpecialty: "Senior Specialist Physician (OPD)",
+        isActive: true,
+      },
+      {
+        userId: kbAdminId,
+        facilityId: korleBuId,
+        role: "facility_admin",
+        titleOrSpecialty: "Director of Medical Affairs",
+        isActive: true,
+      },
+      {
+        userId: kathFrontdeskId,
+        facilityId: kathId,
+        role: "frontdesk",
+        titleOrSpecialty: "OPD Records & Triage Supervisor",
+        isActive: true,
+      },
+      {
+        userId: kathDoctorId,
+        facilityId: kathId,
+        role: "doctor",
+        titleOrSpecialty: "Consultant Family Physician",
+        isActive: true,
+      },
+      {
+        userId: kathAdminId,
+        facilityId: kathId,
+        role: "facility_admin",
+        titleOrSpecialty: "Hospital Operations Administrator",
+        isActive: true,
+      },
+      {
+        userId: tamaleFrontdeskId,
+        facilityId: tamaleId,
+        role: "frontdesk",
+        titleOrSpecialty: "Admissions & Patient Registration Officer",
+        isActive: true,
+      },
+      {
+        userId: tamaleDoctorId,
+        facilityId: tamaleId,
+        role: "doctor",
+        titleOrSpecialty: "Senior Medical Officer (General OPD)",
+        isActive: true,
+      },
+      {
+        userId: tamaleAdminId,
+        facilityId: tamaleId,
+        role: "facility_admin",
+        titleOrSpecialty: "Clinical Services Coordinator",
+        isActive: true,
+      },
+      {
+        userId: hoFrontdeskId,
+        facilityId: hoId,
+        role: "frontdesk",
+        titleOrSpecialty: "Front Desk & Queue Triage Officer",
+        isActive: true,
+      },
+      {
+        userId: hoDoctorId,
+        facilityId: hoId,
+        role: "doctor",
+        titleOrSpecialty: "Specialist Outpatient Physician",
+        isActive: true,
+      },
+      {
+        userId: hoAdminId,
+        facilityId: hoId,
+        role: "facility_admin",
+        titleOrSpecialty: "Head of Clinical Administration",
+        isActive: true,
+      },
     ]);
 
-    // MFA Secrets for Doctor, Facility Admin, Platform Admin
-    await db.insert(schema.mfaSecrets).values([
-      {
-        userId: doctorUserId,
+    // MFA Secrets for all Doctors, Facility Admins, Platform Admin
+    const mfaUserIds = [
+      doctorUserId,
+      facAdminUserId,
+      kbDoctorId,
+      kbAdminId,
+      kathDoctorId,
+      kathAdminId,
+      tamaleDoctorId,
+      tamaleAdminId,
+      hoDoctorId,
+      hoAdminId,
+      platformAdminUserId,
+    ];
+
+    await db.insert(schema.mfaSecrets).values(
+      mfaUserIds.map((uid) => ({
+        userId: uid,
         secretEnc: encrypt("JBSWY3DPEHPK3PXP"),
         isEnrolled: true,
         failedAttempts: 0,
-      },
-      {
-        userId: facAdminUserId,
-        secretEnc: encrypt("JBSWY3DPEHPK3PXP"),
-        isEnrolled: true,
-        failedAttempts: 0,
-      },
-      {
-        userId: platformAdminUserId,
-        secretEnc: encrypt("JBSWY3DPEHPK3PXP"),
-        isEnrolled: true,
-        failedAttempts: 0,
-      },
-    ]);
+      }))
+    );
 
     // Backup Codes
-    await db.insert(schema.backupCodes).values([
-      {
-        id: crypto.randomUUID(),
-        userId: doctorUserId,
-        codeHash: hashBackupCode("GH72-BACKUP1"),
-      },
-      {
-        id: crypto.randomUUID(),
-        userId: doctorUserId,
-        codeHash: hashBackupCode("GH84-BACKUP2"),
-      },
-    ]);
+    await db.insert(schema.backupCodes).values(
+      mfaUserIds.flatMap((uid) => [
+        {
+          id: crypto.randomUUID(),
+          userId: uid,
+          codeHash: hashBackupCode("GH72-BACKUP1"),
+        },
+        {
+          id: crypto.randomUUID(),
+          userId: uid,
+          codeHash: hashBackupCode("GH84-BACKUP2"),
+        },
+      ])
+    );
 
     // Notification Preferences
     await db.insert(schema.notificationPrefs).values([
       {
         userId: patientUserId,
         channel: "whatsapp",
+        optedInAt: new Date(),
+        dailyMsgCount: 0,
+      },
+      {
+        userId: patient2UserId,
+        channel: "whatsapp",
+        optedInAt: new Date(),
+        dailyMsgCount: 0,
+      },
+      {
+        userId: patient3UserId,
+        channel: "sms",
         optedInAt: new Date(),
         dailyMsgCount: 0,
       },
@@ -280,7 +559,7 @@ export async function seed() {
       },
     ]);
 
-    // Seed 1 confirmed appointment for demo
+    // Seed 1 confirmed appointment
     await db.insert(schema.appointments).values([
       {
         id: crypto.randomUUID(),

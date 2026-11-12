@@ -197,13 +197,13 @@ export function Navbar({ user }: Props) {
                   href="/auth/login"
                   className="text-xs sm:text-sm text-slate-200 hover:text-white px-3 py-2 rounded-lg font-medium"
                 >
-                  Staff Login
+                  Sign In
                 </Link>
                 <Link
                   href="/auth/register"
                   className="text-xs sm:text-sm bg-teal-600 hover:bg-teal-700 text-white px-3.5 py-2 rounded-lg font-medium shadow-sm transition-colors"
                 >
-                  Patient Sign Up
+                  Create Account
                 </Link>
               </div>
             )}
@@ -367,14 +367,14 @@ export function Navbar({ user }: Props) {
                     onClick={() => setMobileMenuOpen(false)}
                     className="w-full text-center py-2.5 px-4 rounded-xl border border-slate-700 bg-navy-800 text-white font-semibold text-sm"
                   >
-                    Staff & Patient Login
+                    Sign In
                   </Link>
                   <Link
                     href="/auth/register"
                     onClick={() => setMobileMenuOpen(false)}
                     className="w-full text-center py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-semibold text-sm shadow-sm"
                   >
-                    Register New Patient
+                    Create Account
                   </Link>
                 </div>
               )}

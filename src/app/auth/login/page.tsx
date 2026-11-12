@@ -21,12 +21,6 @@ function LoginForm() {
     }
   }, [urlError]);
 
-  const handleDemoFill = (demoEmail: string) => {
-    setEmail(demoEmail);
-    setPassword("Password123!");
-    setError(null);
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -131,45 +125,8 @@ function LoginForm() {
         </button>
       </form>
 
-      {/* Demo One-Click Fill Helpers */}
-      <div className="pt-4 border-t border-slate-100 space-y-2">
-        <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-          Quick Demo Autofill Credentials (Password: Password123!):
-        </div>
-        <div className="grid grid-cols-2 gap-1.5 text-xs">
-          <button
-            type="button"
-            onClick={() => handleDemoFill("kwame.mensah@example.com")}
-            className="p-1.5 bg-slate-50 hover:bg-slate-100 rounded text-left border border-slate-200 text-slate-700 font-medium truncate"
-          >
-            👤 Patient (Kwame)
-          </button>
-          <button
-            type="button"
-            onClick={() => handleDemoFill("frontdesk.ridge@ghanahealth.gov.gh")}
-            className="p-1.5 bg-slate-50 hover:bg-slate-100 rounded text-left border border-slate-200 text-slate-700 font-medium truncate"
-          >
-            🏢 Front Desk (Ridge)
-          </button>
-          <button
-            type="button"
-            onClick={() => handleDemoFill("dr.boateng@ghanahealth.gov.gh")}
-            className="p-1.5 bg-slate-50 hover:bg-slate-100 rounded text-left border border-slate-200 text-slate-700 font-medium truncate"
-          >
-            🩺 Doctor (MFA)
-          </button>
-          <button
-            type="button"
-            onClick={() => handleDemoFill("director@ghanahealth.gov.gh")}
-            className="p-1.5 bg-slate-50 hover:bg-slate-100 rounded text-left border border-slate-200 text-slate-700 font-medium truncate"
-          >
-            🌐 Platform Admin
-          </button>
-        </div>
-      </div>
-
-      <div className="text-center pt-2 text-xs text-slate-600">
-        New patient?{" "}
+      <div className="text-center pt-2 border-t border-slate-100 text-xs text-slate-600">
+        Don&apos;t have an account?{" "}
         <Link href="/auth/register" className="text-teal-600 hover:underline font-semibold">
           Create an account
         </Link>

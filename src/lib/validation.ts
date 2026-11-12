@@ -46,6 +46,44 @@ export const registerPatientSchema = z.object({
   notificationChannel: z.enum(["whatsapp", "sms"]),
 });
 
+// Unified User Registration (All 5 Roles)
+export const registerUserSchema = z.object({
+  role: z.enum(["patient", "frontdesk", "doctor", "facility_admin", "platform_admin"]),
+  fullName: z.string().trim().min(3, "Full name must be at least 3 characters").max(100),
+  email: z.string().trim().email("Please enter a valid email address"),
+  phone: ghanaPhoneSchema,
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number"),
+  facilityId: z.string().trim().optional().or(z.literal("")),
+  titleOrSpecialty: z.string().trim().max(100).optional().or(z.literal("")),
+  nhis: nhisSchema,
+  ghanaCard: ghanaCardSchema,
+  consentAccepted: z.literal(true, {
+    errorMap: () => ({ message: "You must accept the Ghana Data Protection Act (Act 843) consent" }),
+  }),
+  notificationChannel: z.enum(["whatsapp", "sms"]).default("whatsapp"),
+});
+
+// Admin User / Staff Account Creation Schema
+export const adminCreateUserSchema = z.object({
+  role: z.enum(["patient", "frontdesk", "doctor", "facility_admin", "platform_admin"]),
+  fullName: z.string().trim().min(3, "Full name must be at least 3 characters").max(100),
+  email: z.string().trim().email("Please enter a valid email address"),
+  phone: ghanaPhoneSchema,
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number"),
+  facilityId: z.string().trim().optional().or(z.literal("")),
+  titleOrSpecialty: z.string().trim().max(100).optional().or(z.literal("")),
+  nhis: nhisSchema,
+  ghanaCard: ghanaCardSchema,
+});
+
 // Staff / Patient Login
 export const loginSchema = z.object({
   email: z.string().trim().email("Invalid email address"),
@@ -65,14 +103,14 @@ export const verifyBackupCodeSchema = z.object({
   backupCode: z
     .string()
     .trim()
-    .regex(/^[a-zA-Z0-9]{8,12}$/, "Invalid backup code format"),
+    .regex(/^[a-zA-Z0-9-]{8,14}$/, "Invalid backup code format"),
 });
 
 // 3-Step Guided Booking Wizard Schema
 export const bookingWizardSchema = z.object({
-  facilityId: z.string().uuid("Invalid facility selection"),
-  serviceId: z.string().uuid("Invalid service selection"),
-  slotId: z.string().uuid("Invalid slot selection"),
+  facilityId: z.string().min(1, "Invalid facility selection"),
+  serviceId: z.string().min(1, "Invalid service selection"),
+  slotId: z.string().min(1, "Invalid slot selection"),
   consentAccepted: z.literal(true, {
     errorMap: () => ({ message: "Act 843 data processing consent is required to book an appointment" }),
   }),
@@ -81,9 +119,9 @@ export const bookingWizardSchema = z.object({
 
 // Front Desk Walk-In Booking Schema
 export const walkInBookingSchema = z.object({
-  facilityId: z.string().uuid(),
-  serviceId: z.string().uuid(),
-  slotId: z.string().uuid(),
+  facilityId: z.string().min(1),
+  serviceId: z.string().min(1),
+  slotId: z.string().min(1),
   fullName: z.string().trim().min(3, "Full name required"),
   phone: ghanaPhoneSchema,
   nhis: nhisSchema,
@@ -92,9 +130,9 @@ export const walkInBookingSchema = z.object({
 
 // Facility Slot Generation Schema
 export const generateSlotsSchema = z.object({
-  facilityId: z.string().uuid(),
-  serviceId: z.string().uuid(),
-  doctorId: z.string().uuid().optional().nullable(),
+  facilityId: z.string().min(1),
+  serviceId: z.string().min(1),
+  doctorId: z.string().optional().nullable(),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Format must be YYYY-MM-DD"),
   startHour: z.number().int().min(6).max(18),
   endHour: z.number().int().min(7).max(20),

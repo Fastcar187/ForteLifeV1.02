@@ -14,10 +14,12 @@ export default async function PlatformAdminPage() {
   const facilities = store.getFacilities();
   const auditLogs = store.getAuditLogs(session, 100);
   const metrics = store.getOperationalMetrics();
+  const users = store.getAllUsersWithDetails();
 
   // Log Platform Admin access as required by Section 3
   store.recordAudit("PLATFORM_PORTAL_ACCESSED", "system", null, session, {
     facilityCount: facilities.length,
+    userCount: users.length,
   });
 
   return (
@@ -35,6 +37,7 @@ export default async function PlatformAdminPage() {
         facilities={facilities}
         auditLogs={auditLogs}
         metrics={metrics}
+        users={users}
       />
     </div>
   );

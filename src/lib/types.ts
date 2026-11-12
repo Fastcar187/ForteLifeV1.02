@@ -28,6 +28,7 @@ export interface Facility {
 export interface User {
   id: string;
   role: UserRole;
+  fullName?: string;
   email: string;
   passwordHash?: string | null;
   phoneEnc: string; // AES-256-GCM encrypted
@@ -50,6 +51,7 @@ export interface Patient {
 export interface Staff {
   userId: string;
   facilityId: string;
+  fullName?: string;
   role: "frontdesk" | "doctor" | "facility_admin";
   titleOrSpecialty: string;
   isActive: boolean;

@@ -64,7 +64,7 @@ export default function HomePage({
               href="/auth/register"
               className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-3.5 rounded-xl border border-white/20 transition-all text-sm min-h-[48px]"
             >
-              Patient Sign Up
+              Create Account
             </Link>
           </div>
 

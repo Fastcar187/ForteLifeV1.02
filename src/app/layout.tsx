@@ -2,9 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { getSession } from "@/lib/session";
 import { Navbar } from "@/components/Navbar";
-import { DevRoleSwitcher } from "@/components/DevRoleSwitcher";
 import { ScamBanner } from "@/components/ScamBanner";
-import { ShieldCheck, HeartHandshake, FileDown } from "lucide-react";
+import { ShieldCheck, FileDown } from "lucide-react";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -19,7 +18,6 @@ export const metadata: Metadata = {
   description:
     "Official low-data healthcare appointment booking system compliant with Ghana Data Protection Act (Act 843). Accessible for public and private clinics across Ghana.",
   manifest: "/manifest.json",
-  manifest: "/manifest.json",
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
@@ -33,17 +31,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getSession();
-  const showDemoSwitcher =
-    process.env.NODE_ENV !== "production" ||
-    process.env.ENABLE_DEMO_MODE === "true";
 
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-alabaster text-navy-950 font-sans selection:bg-teal-500 selection:text-white">
         <ScamBanner />
-        {showDemoSwitcher && (
-          <DevRoleSwitcher currentRole={session?.role} currentEmail={session?.email} />
-        )}
         <Navbar user={session} />
 
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

@@ -7,6 +7,8 @@ import { getDataStore } from "./data-store";
 import {
   loginSchema,
   registerPatientSchema,
+  registerUserSchema,
+  adminCreateUserSchema,
   bookingWizardSchema,
   walkInBookingSchema,
   generateSlotsSchema,
@@ -59,6 +61,10 @@ export async function loginAction(formData: FormData) {
   user.failedLoginCount = 0;
   user.lockedUntil = null;
 
+  const patient = store.getPatientByUserId(user.id);
+  const staff = store.getStaffByUserId(user.id);
+  const resolvedFullName = user.fullName || patient?.fullName || staff?.fullName || user.email.split("@")[0];
+
   // Check MFA Requirement for Staff/Admins
   if (isMfaRequired(user.role)) {
     const mfa = store.getMfaSecret(user.id);
@@ -68,6 +74,7 @@ export async function loginAction(formData: FormData) {
         id: user.id,
         email: user.email,
         role: user.role,
+        fullName: resolvedFullName,
         isMfaEnrolled: false,
       };
       await setSession(sessionUser);
@@ -78,6 +85,7 @@ export async function loginAction(formData: FormData) {
         id: user.id,
         email: user.email,
         role: user.role,
+        fullName: resolvedFullName,
         isMfaEnrolled: false, // Temporary until 6-digit code verified
       };
       await setSession(sessionUser);
@@ -88,17 +96,10 @@ export async function loginAction(formData: FormData) {
   // Patient or Front Desk (direct login)
   let staffFacilityId: string | null = null;
   let staffFacilityName: string | null = null;
-  let fullName: string | null = null;
 
-  if (user.role === "patient") {
-    const patient = store.getPatientByUserId(user.id);
-    fullName = patient?.fullName || "Patient";
-  } else {
-    const staff = store.getStaffByUserId(user.id);
-    if (staff) {
-      staffFacilityId = staff.facilityId;
-      staffFacilityName = store.getFacilityById(staff.facilityId)?.name || null;
-    }
+  if (staff) {
+    staffFacilityId = staff.facilityId;
+    staffFacilityName = store.getFacilityById(staff.facilityId)?.name || null;
   }
 
   const sessionUser: SessionUser = {
@@ -107,7 +108,7 @@ export async function loginAction(formData: FormData) {
     role: user.role,
     facilityId: staffFacilityId,
     facilityName: staffFacilityName,
-    fullName,
+    fullName: resolvedFullName,
     isMfaEnrolled: true,
   };
 
@@ -129,17 +130,24 @@ export async function verifyMfaAction(formData: FormData) {
     return { error: parsed.error.errors[0]?.message || "Invalid code" };
   }
 
-  const result = store.verifyMfaLogin(session.id, parsed.data.code);
+  const existingMfa = store.getMfaSecret(session.id);
+  const result =
+    existingMfa && !existingMfa.isEnrolled
+      ? store.verifyAndEnrollMfa(session.id, parsed.data.code)
+      : store.verifyMfaLogin(session.id, parsed.data.code);
+
   if (!result.success) {
     return { error: result.message || "Invalid 6-digit code" };
   }
 
   // Elevate session with completed MFA
+  const user = store.getUserById(session.id);
   const staff = store.getStaffByUserId(session.id);
   const facility = staff ? store.getFacilityById(staff.facilityId) : null;
 
   const elevatedSession: SessionUser = {
     ...session,
+    fullName: session.fullName || user?.fullName || staff?.fullName || session.email.split("@")[0],
     facilityId: staff?.facilityId || null,
     facilityName: facility?.name || null,
     isMfaEnrolled: true,
@@ -169,11 +177,13 @@ export async function verifyBackupCodeAction(formData: FormData) {
     return { error: result.message || "Invalid backup code" };
   }
 
+  const user = store.getUserById(session.id);
   const staff = store.getStaffByUserId(session.id);
   const facility = staff ? store.getFacilityById(staff.facilityId) : null;
 
   const elevatedSession: SessionUser = {
     ...session,
+    fullName: session.fullName || user?.fullName || staff?.fullName || session.email.split("@")[0],
     facilityId: staff?.facilityId || null,
     facilityName: facility?.name || null,
     isMfaEnrolled: true,
@@ -188,21 +198,29 @@ export async function verifyBackupCodeAction(formData: FormData) {
   redirect("/");
 }
 
-export async function registerPatientAction(formData: FormData) {
+export async function registerUserAction(formData: FormData) {
+  const roleVal = (formData.get("role") as UserRole) || "patient";
   const raw = {
+    role: roleVal,
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     phone: formData.get("phone"),
     password: formData.get("password"),
+    facilityId: formData.get("facilityId") || "",
+    titleOrSpecialty: formData.get("titleOrSpecialty") || "",
     nhis: formData.get("nhis") || "",
     ghanaCard: formData.get("ghanaCard") || "",
     consentAccepted: formData.get("consentAccepted") === "true" || formData.get("consentAccepted") === "on",
     notificationChannel: formData.get("notificationChannel") || "whatsapp",
   };
 
-  const parsed = registerPatientSchema.safeParse(raw);
+  const parsed = registerUserSchema.safeParse(raw);
   if (!parsed.success) {
     return { error: parsed.error.errors[0]?.message || "Invalid registration information" };
+  }
+
+  if (["frontdesk", "doctor", "facility_admin"].includes(parsed.data.role) && !parsed.data.facilityId) {
+    return { error: "Please select an assigned hospital facility for clinical/facility staff" };
   }
 
   // Check if email already registered
@@ -212,68 +230,20 @@ export async function registerPatientAction(formData: FormData) {
   }
 
   const hashedPassword = await hashPassword(parsed.data.password);
-  const { user, patient } = store.registerPatient({
+  const { user, facilityId, facilityName, fullName } = store.registerUser({
+    role: parsed.data.role,
     fullName: parsed.data.fullName,
     email: parsed.data.email,
     phone: parsed.data.phone,
     passwordHash: hashedPassword,
+    facilityId: parsed.data.facilityId || undefined,
+    titleOrSpecialty: parsed.data.titleOrSpecialty || undefined,
     nhis: parsed.data.nhis,
     ghanaCard: parsed.data.ghanaCard,
     notificationChannel: parsed.data.notificationChannel,
   });
 
-  const sessionUser: SessionUser = {
-    id: user.id,
-    email: user.email,
-    role: "patient",
-    fullName: patient.fullName,
-    isMfaEnrolled: true,
-  };
-
-  await setSession(sessionUser);
-  redirect("/patient/dashboard");
-}
-
-export async function logoutAction() {
-  await destroySession();
-  redirect("/auth/login");
-}
-
-// --- Demo Role Switcher (For instant evaluation & testing) ---
-export async function switchDemoRoleAction(role: UserRole) {
-  if (process.env.NODE_ENV === "production" && process.env.ENABLE_DEMO_MODE !== "true") {
-    throw new Error("Demo role switcher is disabled in production");
-  }
-
-  let user: any = null;
-  let facilityId: string | null = null;
-  let facilityName: string | null = null;
-  let fullName: string | null = null;
-
-  if (role === "patient") {
-    user = store.getUserById("usr-patient-1");
-    fullName = "Kwame Mensah";
-  } else if (role === "frontdesk") {
-    user = store.getUserById("usr-frontdesk-1");
-    facilityId = "fac-ridge";
-    facilityName = "Greater Accra Regional Hospital (Ridge)";
-    fullName = "Akua Adjei (Front Desk)";
-  } else if (role === "doctor") {
-    user = store.getUserById("usr-doctor-1");
-    facilityId = "fac-ridge";
-    facilityName = "Greater Accra Regional Hospital (Ridge)";
-    fullName = "Dr. Emmanuel Boateng";
-  } else if (role === "facility_admin") {
-    user = store.getUserById("usr-facadmin-1");
-    facilityId = "fac-ridge";
-    facilityName = "Greater Accra Regional Hospital (Ridge)";
-    fullName = "Dr. Grace Osei (Facility Admin)";
-  } else if (role === "platform_admin") {
-    user = store.getUserById("usr-platformadmin-1");
-    fullName = "Ministry Director (Platform Admin)";
-  }
-
-  if (user) {
+  if (isMfaRequired(user.role)) {
     const sessionUser: SessionUser = {
       id: user.id,
       email: user.email,
@@ -281,17 +251,111 @@ export async function switchDemoRoleAction(role: UserRole) {
       facilityId,
       facilityName,
       fullName,
-      isMfaEnrolled: true,
+      isMfaEnrolled: false,
     };
     await setSession(sessionUser);
+    redirect("/auth/enroll-mfa");
   }
 
-  // Redirect to corresponding portal
-  if (role === "patient") redirect("/patient/dashboard");
-  if (role === "frontdesk") redirect("/frontdesk/dashboard");
-  if (role === "doctor") redirect("/doctor/dashboard");
-  if (role === "facility_admin") redirect("/admin/facility");
-  if (role === "platform_admin") redirect("/admin/platform");
+  const sessionUser: SessionUser = {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    facilityId,
+    facilityName,
+    fullName,
+    isMfaEnrolled: true,
+  };
+
+  await setSession(sessionUser);
+  if (user.role === "patient") redirect("/patient/dashboard");
+  if (user.role === "frontdesk") redirect("/frontdesk/dashboard");
+  redirect("/");
+}
+
+export async function registerPatientAction(formData: FormData) {
+  if (!formData.get("role")) {
+    formData.set("role", "patient");
+  }
+  return registerUserAction(formData);
+}
+
+export async function adminCreateUserAction(formData: FormData) {
+  const session = await getSession();
+  if (!session || !["facility_admin", "platform_admin"].includes(session.role)) {
+    return { error: "Unauthorized: Only administrators can provision accounts" };
+  }
+
+  const roleVal = (formData.get("role") as UserRole) || "frontdesk";
+  if (session.role === "facility_admin" && roleVal === "platform_admin") {
+    return { error: "Facility Administrators cannot create Platform Administrator accounts" };
+  }
+
+  const targetFacilityId =
+    session.role === "facility_admin"
+      ? session.facilityId || (formData.get("facilityId") as string)
+      : (formData.get("facilityId") as string) || "";
+
+  const raw = {
+    role: roleVal,
+    fullName: formData.get("fullName"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    password: formData.get("password"),
+    facilityId: targetFacilityId,
+    titleOrSpecialty: formData.get("titleOrSpecialty") || "",
+    nhis: formData.get("nhis") || "",
+    ghanaCard: formData.get("ghanaCard") || "",
+  };
+
+  const parsed = adminCreateUserSchema.safeParse(raw);
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0]?.message || "Invalid account details" };
+  }
+
+  if (["frontdesk", "doctor", "facility_admin"].includes(parsed.data.role) && !parsed.data.facilityId) {
+    return { error: "Please select a hospital facility for this staff member" };
+  }
+
+  const existing = store.getUserByEmail(parsed.data.email);
+  if (existing) {
+    return { error: "An account with this email address already exists" };
+  }
+
+  const hashedPassword = await hashPassword(parsed.data.password);
+  const { user, fullName } = store.registerUser(
+    {
+      role: parsed.data.role,
+      fullName: parsed.data.fullName,
+      email: parsed.data.email,
+      phone: parsed.data.phone,
+      passwordHash: hashedPassword,
+      facilityId: parsed.data.facilityId || undefined,
+      titleOrSpecialty: parsed.data.titleOrSpecialty || undefined,
+      nhis: parsed.data.nhis,
+      ghanaCard: parsed.data.ghanaCard,
+      notificationChannel: "whatsapp",
+    },
+    session
+  );
+
+  revalidatePath("/admin/facility");
+  revalidatePath("/admin/platform");
+
+  return {
+    success: true,
+    user: {
+      id: user.id,
+      email: user.email,
+      fullName,
+      role: user.role,
+    },
+  };
+}
+
+export async function logoutAction() {
+  await destroySession();
+  redirect("/auth/login");
 }
 
 // --- Patient Booking Wizard Actions ---

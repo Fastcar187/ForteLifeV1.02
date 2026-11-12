@@ -88,26 +88,53 @@ const INITIAL_SERVICES: MedicalService[] = [
   { id: "srv-ho-opd", facilityId: "fac-ho", name: "General Outpatient Consultation", durationMinutes: 20, isActive: true },
 ];
 
-// Pre-seeded Users across all 5 roles
+// Pre-seeded Users across all 5 roles and all participating hospitals
 // Default Password for all pre-seeded accounts: Password123!
-const VALID_DEMO_PASSWORD_HASH = "$2a$10$gyUwQkaPFZS2l6qdaTmj.Oz0N/rkY6L/TTVY/xH3lqWA/K1U3OcZu";
+const DEFAULT_PASSWORD_HASH = "$2a$10$gyUwQkaPFZS2l6qdaTmj.Oz0N/rkY6L/TTVY/xH3lqWA/K1U3OcZu";
 
 const INITIAL_USERS: User[] = [
+  // Patients
   {
     id: "usr-patient-1",
     role: "patient",
+    fullName: "Kwame Mensah",
     email: "kwame.mensah@example.com",
-    passwordHash: VALID_DEMO_PASSWORD_HASH,
+    passwordHash: DEFAULT_PASSWORD_HASH,
     phoneEnc: encrypt("+233244123456"),
     phoneHash: blindIndex("+233244123456"),
     failedLoginCount: 0,
     createdAt: new Date("2024-01-05").toISOString(),
   },
   {
+    id: "usr-patient-2",
+    role: "patient",
+    fullName: "Ama Serwaa Ofori",
+    email: "ama.ofori@example.com",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233244987654"),
+    phoneHash: blindIndex("+233244987654"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-06").toISOString(),
+  },
+  {
+    id: "usr-patient-3",
+    role: "patient",
+    fullName: "Ibrahim Abdulai",
+    email: "ibrahim.abdulai@example.com",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233208765432"),
+    phoneHash: blindIndex("+233208765432"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-07").toISOString(),
+  },
+
+  // Ridge Hospital Staff
+  {
     id: "usr-frontdesk-1",
     role: "frontdesk",
+    fullName: "Akua Adjei",
     email: "frontdesk.ridge@ghanahealth.gov.gh",
-    passwordHash: VALID_DEMO_PASSWORD_HASH,
+    passwordHash: DEFAULT_PASSWORD_HASH,
     phoneEnc: encrypt("+233201234567"),
     phoneHash: blindIndex("+233201234567"),
     failedLoginCount: 0,
@@ -116,8 +143,9 @@ const INITIAL_USERS: User[] = [
   {
     id: "usr-doctor-1",
     role: "doctor",
+    fullName: "Dr. Emmanuel Boateng",
     email: "dr.boateng@ghanahealth.gov.gh",
-    passwordHash: VALID_DEMO_PASSWORD_HASH,
+    passwordHash: DEFAULT_PASSWORD_HASH,
     phoneEnc: encrypt("+233277890123"),
     phoneHash: blindIndex("+233277890123"),
     failedLoginCount: 0,
@@ -126,18 +154,162 @@ const INITIAL_USERS: User[] = [
   {
     id: "usr-facadmin-1",
     role: "facility_admin",
+    fullName: "Dr. Grace Osei",
     email: "admin.ridge@ghanahealth.gov.gh",
-    passwordHash: VALID_DEMO_PASSWORD_HASH,
+    passwordHash: DEFAULT_PASSWORD_HASH,
     phoneEnc: encrypt("+233245678901"),
     phoneHash: blindIndex("+233245678901"),
     failedLoginCount: 0,
     createdAt: new Date("2024-01-01").toISOString(),
   },
+
+  // Korle Bu Teaching Hospital Staff
+  {
+    id: "usr-frontdesk-kb",
+    role: "frontdesk",
+    fullName: "Nana Yaa Asante",
+    email: "frontdesk.korlebu@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233202345678"),
+    phoneHash: blindIndex("+233202345678"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-02").toISOString(),
+  },
+  {
+    id: "usr-doctor-kb",
+    role: "doctor",
+    fullName: "Dr. Kofi Owusu-Ansah",
+    email: "dr.owusu@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233243456789"),
+    phoneHash: blindIndex("+233243456789"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-02").toISOString(),
+  },
+  {
+    id: "usr-facadmin-kb",
+    role: "facility_admin",
+    fullName: "Prof. Samuel Tetteh",
+    email: "admin.korlebu@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233244567890"),
+    phoneHash: blindIndex("+233244567890"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-01").toISOString(),
+  },
+
+  // Komfo Anokye Teaching Hospital (KATH) Staff
+  {
+    id: "usr-frontdesk-kath",
+    role: "frontdesk",
+    fullName: "Abena Pokuaa",
+    email: "frontdesk.kath@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233203456789"),
+    phoneHash: blindIndex("+233203456789"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-02").toISOString(),
+  },
+  {
+    id: "usr-doctor-kath",
+    role: "doctor",
+    fullName: "Dr. Yaw Agyeman",
+    email: "dr.agyeman@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233246789012"),
+    phoneHash: blindIndex("+233246789012"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-02").toISOString(),
+  },
+  {
+    id: "usr-facadmin-kath",
+    role: "facility_admin",
+    fullName: "Dr.Beatrice Appiah",
+    email: "admin.kath@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233247890123"),
+    phoneHash: blindIndex("+233247890123"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-01").toISOString(),
+  },
+
+  // Tamale Teaching Hospital Staff
+  {
+    id: "usr-frontdesk-tamale",
+    role: "frontdesk",
+    fullName: "Fatima Alhassan",
+    email: "frontdesk.tamale@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233204567890"),
+    phoneHash: blindIndex("+233204567890"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-02").toISOString(),
+  },
+  {
+    id: "usr-doctor-tamale",
+    role: "doctor",
+    fullName: "Dr. Sulemana Yakubu",
+    email: "dr.yakubu@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233248901234"),
+    phoneHash: blindIndex("+233248901234"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-02").toISOString(),
+  },
+  {
+    id: "usr-facadmin-tamale",
+    role: "facility_admin",
+    fullName: "Dr. Haruna Mahama",
+    email: "admin.tamale@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233249012345"),
+    phoneHash: blindIndex("+233249012345"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-01").toISOString(),
+  },
+
+  // Ho Teaching Hospital Staff
+  {
+    id: "usr-frontdesk-ho",
+    role: "frontdesk",
+    fullName: "Mawuena Dogbe",
+    email: "frontdesk.ho@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233205678901"),
+    phoneHash: blindIndex("+233205678901"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-02").toISOString(),
+  },
+  {
+    id: "usr-doctor-ho",
+    role: "doctor",
+    fullName: "Dr. Edem Kpodo",
+    email: "dr.kpodo@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233240123456"),
+    phoneHash: blindIndex("+233240123456"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-02").toISOString(),
+  },
+  {
+    id: "usr-facadmin-ho",
+    role: "facility_admin",
+    fullName: "Dr. Selorm Dzivenu",
+    email: "admin.ho@ghanahealth.gov.gh",
+    passwordHash: DEFAULT_PASSWORD_HASH,
+    phoneEnc: encrypt("+233241234560"),
+    phoneHash: blindIndex("+233241234560"),
+    failedLoginCount: 0,
+    createdAt: new Date("2024-01-01").toISOString(),
+  },
+
+  // National Platform Admin
   {
     id: "usr-platformadmin-1",
     role: "platform_admin",
+    fullName: "Dr. Patrick Kuma-Aboagye (Director)",
     email: "director@ghanahealth.gov.gh",
-    passwordHash: VALID_DEMO_PASSWORD_HASH,
+    passwordHash: DEFAULT_PASSWORD_HASH,
     phoneEnc: encrypt("+233501239876"),
     phoneHash: blindIndex("+233501239876"),
     failedLoginCount: 0,
@@ -154,12 +326,30 @@ const INITIAL_PATIENTS: Patient[] = [
     consentAcceptedAt: new Date("2024-01-05").toISOString(),
     createdAt: new Date("2024-01-05").toISOString(),
   },
+  {
+    userId: "usr-patient-2",
+    fullName: "Ama Serwaa Ofori",
+    nhisEnc: encrypt("58291044"),
+    ghanaCardEnc: encrypt("GHA-491827364-1"),
+    consentAcceptedAt: new Date("2024-01-06").toISOString(),
+    createdAt: new Date("2024-01-06").toISOString(),
+  },
+  {
+    userId: "usr-patient-3",
+    fullName: "Ibrahim Abdulai",
+    nhisEnc: encrypt("39104825"),
+    ghanaCardEnc: encrypt("GHA-839201746-8"),
+    consentAcceptedAt: new Date("2024-01-07").toISOString(),
+    createdAt: new Date("2024-01-07").toISOString(),
+  },
 ];
 
 const INITIAL_STAFF: Staff[] = [
+  // Ridge Hospital
   {
     userId: "usr-frontdesk-1",
     facilityId: "fac-ridge",
+    fullName: "Akua Adjei",
     role: "frontdesk",
     titleOrSpecialty: "Senior Admissions & Triage Officer",
     isActive: true,
@@ -167,6 +357,7 @@ const INITIAL_STAFF: Staff[] = [
   {
     userId: "usr-doctor-1",
     facilityId: "fac-ridge",
+    fullName: "Dr. Emmanuel Boateng",
     role: "doctor",
     titleOrSpecialty: "Consultant Physician (General OPD)",
     isActive: true,
@@ -174,8 +365,113 @@ const INITIAL_STAFF: Staff[] = [
   {
     userId: "usr-facadmin-1",
     facilityId: "fac-ridge",
+    fullName: "Dr. Grace Osei",
     role: "facility_admin",
     titleOrSpecialty: "Medical Superintendent & Operations Director",
+    isActive: true,
+  },
+
+  // Korle Bu Teaching Hospital
+  {
+    userId: "usr-frontdesk-kb",
+    facilityId: "fac-korle-bu",
+    fullName: "Nana Yaa Asante",
+    role: "frontdesk",
+    titleOrSpecialty: "Principal Admissions Officer",
+    isActive: true,
+  },
+  {
+    userId: "usr-doctor-kb",
+    facilityId: "fac-korle-bu",
+    fullName: "Dr. Kofi Owusu-Ansah",
+    role: "doctor",
+    titleOrSpecialty: "Senior Specialist Physician (OPD)",
+    isActive: true,
+  },
+  {
+    userId: "usr-facadmin-kb",
+    facilityId: "fac-korle-bu",
+    fullName: "Prof. Samuel Tetteh",
+    role: "facility_admin",
+    titleOrSpecialty: "Director of Medical Affairs",
+    isActive: true,
+  },
+
+  // Komfo Anokye Teaching Hospital (KATH)
+  {
+    userId: "usr-frontdesk-kath",
+    facilityId: "fac-kath",
+    fullName: "Abena Pokuaa",
+    role: "frontdesk",
+    titleOrSpecialty: "OPD Records & Triage Supervisor",
+    isActive: true,
+  },
+  {
+    userId: "usr-doctor-kath",
+    facilityId: "fac-kath",
+    fullName: "Dr. Yaw Agyeman",
+    role: "doctor",
+    titleOrSpecialty: "Consultant Family Physician",
+    isActive: true,
+  },
+  {
+    userId: "usr-facadmin-kath",
+    facilityId: "fac-kath",
+    fullName: "Dr. Beatrice Appiah",
+    role: "facility_admin",
+    titleOrSpecialty: "Hospital Operations Administrator",
+    isActive: true,
+  },
+
+  // Tamale Teaching Hospital
+  {
+    userId: "usr-frontdesk-tamale",
+    facilityId: "fac-tamale",
+    fullName: "Fatima Alhassan",
+    role: "frontdesk",
+    titleOrSpecialty: "Admissions & Patient Registration Officer",
+    isActive: true,
+  },
+  {
+    userId: "usr-doctor-tamale",
+    facilityId: "fac-tamale",
+    fullName: "Dr. Sulemana Yakubu",
+    role: "doctor",
+    titleOrSpecialty: "Senior Medical Officer (General OPD)",
+    isActive: true,
+  },
+  {
+    userId: "usr-facadmin-tamale",
+    facilityId: "fac-tamale",
+    fullName: "Dr. Haruna Mahama",
+    role: "facility_admin",
+    titleOrSpecialty: "Clinical Services Coordinator",
+    isActive: true,
+  },
+
+  // Ho Teaching Hospital
+  {
+    userId: "usr-frontdesk-ho",
+    facilityId: "fac-ho",
+    fullName: "Mawuena Dogbe",
+    role: "frontdesk",
+    titleOrSpecialty: "Front Desk & Queue Triage Officer",
+    isActive: true,
+  },
+  {
+    userId: "usr-doctor-ho",
+    facilityId: "fac-ho",
+    fullName: "Dr. Edem Kpodo",
+    role: "doctor",
+    titleOrSpecialty: "Specialist Outpatient Physician",
+    isActive: true,
+  },
+  {
+    userId: "usr-facadmin-ho",
+    facilityId: "fac-ho",
+    fullName: "Dr. Selorm Dzivenu",
+    role: "facility_admin",
+    titleOrSpecialty: "Head of Clinical Administration",
     isActive: true,
   },
 ];
@@ -188,16 +484,19 @@ function getFutureDate(daysAhead: number, hours: number, minutes = 0): string {
   return d.toISOString();
 }
 
-// Generate realistic slots for Ridge Hospital & Korle Bu for Today and Next 3 Days
+// Generate realistic slots for all 5 hospitals for Today and Next 4 Days
 function generateInitialSlots(): AppointmentSlot[] {
   const slots: AppointmentSlot[] = [];
-  const facilityIds = ["fac-ridge", "fac-korle-bu"];
+  const facilityConfigs = [
+    { facId: "fac-ridge", serviceId: "srv-rd-opd", doctorId: "usr-doctor-1" },
+    { facId: "fac-korle-bu", serviceId: "srv-kb-opd", doctorId: "usr-doctor-kb" },
+    { facId: "fac-kath", serviceId: "srv-kt-opd", doctorId: "usr-doctor-kath" },
+    { facId: "fac-tamale", serviceId: "srv-tm-opd", doctorId: "usr-doctor-tamale" },
+    { facId: "fac-ho", serviceId: "srv-ho-opd", doctorId: "usr-doctor-ho" },
+  ];
 
-  facilityIds.forEach((facId) => {
-    const serviceId = facId === "fac-ridge" ? "srv-rd-opd" : "srv-kb-opd";
-    const doctorId = facId === "fac-ridge" ? "usr-doctor-1" : null;
-
-    // Days 0 (Today), 1 (Tomorrow), 2, 3
+  facilityConfigs.forEach(({ facId, serviceId, doctorId }) => {
+    // Days 0 (Today), 1 (Tomorrow), 2, 3, 4
     for (let day = 0; day <= 4; day++) {
       const times = [
         { h: 8, m: 0 },
@@ -224,7 +523,7 @@ function generateInitialSlots(): AppointmentSlot[] {
           startTime: start,
           endTime: end,
           capacity: 1,
-          bookedCount: day === 0 && index === 0 ? 1 : 0, // Book first slot for demo
+          bookedCount: facId === "fac-ridge" && day === 0 && index === 0 ? 1 : 0,
         });
       });
     }
@@ -259,51 +558,69 @@ const INITIAL_NOTIF_PREFS: NotificationPrefs[] = [
     dailyMsgCount: 1,
     lastMsgDate: new Date().toISOString().split("T")[0],
   },
+  {
+    userId: "usr-patient-2",
+    channel: "whatsapp",
+    optedInAt: new Date().toISOString(),
+    dailyMsgCount: 0,
+  },
+  {
+    userId: "usr-patient-3",
+    channel: "sms",
+    optedInAt: new Date().toISOString(),
+    dailyMsgCount: 0,
+  },
 ];
 
 const INITIAL_MFA_SECRETS: MfaSecret[] = [
-  {
-    userId: "usr-doctor-1",
-    secretEnc: encrypt("JBSWY3DPEHPK3PXP"), // standard test base32
-    isEnrolled: true,
-    lastUsedTimestep: null,
-    failedAttempts: 0,
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    userId: "usr-facadmin-1",
-    secretEnc: encrypt("JBSWY3DPEHPK3PXP"),
-    isEnrolled: true,
-    lastUsedTimestep: null,
-    failedAttempts: 0,
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    userId: "usr-platformadmin-1",
-    secretEnc: encrypt("JBSWY3DPEHPK3PXP"),
-    isEnrolled: true,
-    lastUsedTimestep: null,
-    failedAttempts: 0,
-    updatedAt: new Date().toISOString(),
-  },
-];
+  "usr-doctor-1",
+  "usr-facadmin-1",
+  "usr-doctor-kb",
+  "usr-facadmin-kb",
+  "usr-doctor-kath",
+  "usr-facadmin-kath",
+  "usr-doctor-tamale",
+  "usr-facadmin-tamale",
+  "usr-doctor-ho",
+  "usr-facadmin-ho",
+  "usr-platformadmin-1",
+].map((uid) => ({
+  userId: uid,
+  secretEnc: encrypt("JBSWY3DPEHPK3PXP"),
+  isEnrolled: true,
+  lastUsedTimestep: null,
+  failedAttempts: 0,
+  updatedAt: new Date().toISOString(),
+}));
 
 const INITIAL_BACKUP_CODES: BackupCode[] = [
+  "usr-doctor-1",
+  "usr-facadmin-1",
+  "usr-doctor-kb",
+  "usr-facadmin-kb",
+  "usr-doctor-kath",
+  "usr-facadmin-kath",
+  "usr-doctor-tamale",
+  "usr-facadmin-tamale",
+  "usr-doctor-ho",
+  "usr-facadmin-ho",
+  "usr-platformadmin-1",
+].flatMap((uid, idx) => [
   {
-    id: "bc-1",
-    userId: "usr-doctor-1",
+    id: `bc-${idx}-1`,
+    userId: uid,
     codeHash: hashBackupCode("GH72-BACKUP1"),
     usedAt: null,
     createdAt: new Date().toISOString(),
   },
   {
-    id: "bc-2",
-    userId: "usr-doctor-1",
+    id: `bc-${idx}-2`,
+    userId: uid,
     codeHash: hashBackupCode("GH84-BACKUP2"),
     usedAt: null,
     createdAt: new Date().toISOString(),
   },
-];
+]);
 
 const INITIAL_AUDIT_LOGS: AuditLog[] = [
   {
@@ -485,6 +802,128 @@ class DataStore {
       .filter((s) => !!s.user);
   }
 
+  getAllUsersWithDetails(): {
+    id: string;
+    fullName: string;
+    email: string;
+    role: UserRole;
+    facilityName: string | null;
+    titleOrSpecialty: string | null;
+    isMfaEnrolled: boolean;
+    createdAt: string;
+  }[] {
+    return this.users.map((u) => {
+      const patient = this.patients.find((p) => p.userId === u.id);
+      const staffMember = this.staff.find((s) => s.userId === u.id);
+      const facility = staffMember ? this.facilities.find((f) => f.id === staffMember.facilityId) : null;
+      const mfa = this.mfaSecrets.find((m) => m.userId === u.id);
+
+      return {
+        id: u.id,
+        fullName: u.fullName || patient?.fullName || staffMember?.fullName || u.email.split("@")[0],
+        email: u.email,
+        role: u.role,
+        facilityName: facility?.name || null,
+        titleOrSpecialty: staffMember?.titleOrSpecialty || (u.role === "platform_admin" ? "National Platform Directorate" : null),
+        isMfaEnrolled: !!mfa?.isEnrolled,
+        createdAt: u.createdAt,
+      };
+    });
+  }
+
+  registerUser(
+    data: {
+      role: UserRole;
+      fullName: string;
+      email: string;
+      phone: string;
+      passwordHash: string;
+      facilityId?: string;
+      titleOrSpecialty?: string;
+      nhis?: string;
+      ghanaCard?: string;
+      notificationChannel?: "whatsapp" | "sms";
+    },
+    actor?: SessionUser
+  ): { user: User; facilityId: string | null; facilityName: string | null; fullName: string } {
+    const userId = `usr-${data.role}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const user: User = {
+      id: userId,
+      role: data.role,
+      fullName: data.fullName,
+      email: data.email,
+      passwordHash: data.passwordHash,
+      phoneEnc: encrypt(data.phone),
+      phoneHash: blindIndex(data.phone),
+      failedLoginCount: 0,
+      createdAt: new Date().toISOString(),
+    };
+
+    this.users.push(user);
+
+    let assignedFacilityId: string | null = null;
+    let assignedFacilityName: string | null = null;
+
+    if (data.role === "patient") {
+      const patient: Patient = {
+        userId,
+        fullName: data.fullName,
+        nhisEnc: data.nhis ? encrypt(data.nhis) : null,
+        ghanaCardEnc: data.ghanaCard ? encrypt(data.ghanaCard) : null,
+        consentAcceptedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+      };
+      const notifPref: NotificationPrefs = {
+        userId,
+        channel: data.notificationChannel || "whatsapp",
+        optedInAt: new Date().toISOString(),
+        dailyMsgCount: 0,
+      };
+      this.patients.push(patient);
+      this.notificationPrefs.push(notifPref);
+    } else if (["frontdesk", "doctor", "facility_admin"].includes(data.role)) {
+      const targetFacId = data.facilityId || this.facilities[0]?.id || "fac-ridge";
+      const fac = this.getFacilityById(targetFacId);
+      assignedFacilityId = targetFacId;
+      assignedFacilityName = fac?.name || null;
+
+      const defaultTitles: Record<string, string> = {
+        frontdesk: "Admissions & Triage Officer",
+        doctor: "Medical Officer (OPD)",
+        facility_admin: "Hospital Facility Administrator",
+      };
+
+      const staffMember: Staff = {
+        userId,
+        facilityId: targetFacId,
+        fullName: data.fullName,
+        role: data.role as "frontdesk" | "doctor" | "facility_admin",
+        titleOrSpecialty: data.titleOrSpecialty?.trim() || defaultTitles[data.role] || "Clinical Staff",
+        isActive: true,
+      };
+      this.staff.push(staffMember);
+    }
+
+    this.recordAudit(
+      "USER_ACCOUNT_CREATED",
+      "users",
+      userId,
+      actor || { id: userId, email: data.email, role: data.role },
+      {
+        role: data.role,
+        facilityId: assignedFacilityId,
+        createdBy: actor ? actor.role : "self_registration",
+      }
+    );
+
+    return {
+      user,
+      facilityId: assignedFacilityId,
+      facilityName: assignedFacilityName,
+      fullName: data.fullName,
+    };
+  }
+
   registerPatient(data: {
     fullName: string;
     email: string;
@@ -494,42 +933,11 @@ class DataStore {
     ghanaCard?: string;
     notificationChannel: "whatsapp" | "sms";
   }): { user: User; patient: Patient } {
-    const userId = `usr-pat-${Date.now()}`;
-    const user: User = {
-      id: userId,
+    const { user } = this.registerUser({
       role: "patient",
-      email: data.email,
-      passwordHash: data.passwordHash,
-      phoneEnc: encrypt(data.phone),
-      phoneHash: blindIndex(data.phone),
-      failedLoginCount: 0,
-      createdAt: new Date().toISOString(),
-    };
-
-    const patient: Patient = {
-      userId,
-      fullName: data.fullName,
-      nhisEnc: data.nhis ? encrypt(data.nhis) : null,
-      ghanaCardEnc: data.ghanaCard ? encrypt(data.ghanaCard) : null,
-      consentAcceptedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-    };
-
-    const notifPref: NotificationPrefs = {
-      userId,
-      channel: data.notificationChannel,
-      optedInAt: new Date().toISOString(),
-      dailyMsgCount: 0,
-    };
-
-    this.users.push(user);
-    this.patients.push(patient);
-    this.notificationPrefs.push(notifPref);
-
-    this.recordAudit("PATIENT_REGISTERED", "patients", userId, { id: userId, email: data.email, role: "patient" }, {
-      channel: data.notificationChannel,
+      ...data,
     });
-
+    const patient = this.patients.find((p) => p.userId === user.id)!;
     return { user, patient };
   }
 
