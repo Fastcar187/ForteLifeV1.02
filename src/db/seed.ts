@@ -111,7 +111,7 @@ export async function seed() {
 
     console.log("Seeding users & clinical staff across all 5 roles and hospitals...");
     // Password123!
-    const defaultPasswordHash = "$2a$10$gyUwQkaPFZS2l6qdaTmj.Oz0N/rkY6L/TTVY/xH3lqWA/K1U3OcZu";
+    const defaultPasswordHash = "$2a$10$Dr73GvDK.Cj2I4puVEmxYuByiv1obl9SxQrYGzljV1tMXXIaXyKAC";
 
     const patientUserId = crypto.randomUUID();
     const patient2UserId = crypto.randomUUID();

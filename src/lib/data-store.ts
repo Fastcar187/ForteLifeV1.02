@@ -90,7 +90,7 @@ const INITIAL_SERVICES: MedicalService[] = [
 
 // Pre-seeded Users across all 5 roles and all participating hospitals
 // Default Password for all pre-seeded accounts: Password123!
-const DEFAULT_PASSWORD_HASH = "$2a$10$gyUwQkaPFZS2l6qdaTmj.Oz0N/rkY6L/TTVY/xH3lqWA/K1U3OcZu";
+const DEFAULT_PASSWORD_HASH = "$2a$10$Dr73GvDK.Cj2I4puVEmxYuByiv1obl9SxQrYGzljV1tMXXIaXyKAC";
 
 const INITIAL_USERS: User[] = [
   // Patients

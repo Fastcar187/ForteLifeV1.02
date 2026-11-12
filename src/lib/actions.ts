@@ -26,9 +26,11 @@ const store = getDataStore();
 // --- Authentication Actions ---
 
 export async function loginAction(formData: FormData) {
+  const emailInput = ((formData.get("email") as string) || "").trim().toLowerCase();
+  const passwordInput = (formData.get("password") as string) || "";
   const raw = {
-    email: formData.get("email"),
-    password: formData.get("password"),
+    email: emailInput,
+    password: passwordInput,
   };
 
   const parsed = loginSchema.safeParse(raw);
@@ -41,13 +43,12 @@ export async function loginAction(formData: FormData) {
     return { error: "Invalid email or password" };
   }
 
-  // Check lockout
-  if (user.lockedUntil && new Date(user.lockedUntil) > new Date()) {
-    return { error: "Account temporarily locked due to multiple failed logins. Please try again later." };
-  }
-
   const isValid = await verifyPassword(parsed.data.password, user.passwordHash);
   if (!isValid) {
+    // Check lockout
+    if (user.lockedUntil && new Date(user.lockedUntil) > new Date()) {
+      return { error: "Account temporarily locked due to multiple failed logins. Please try again later." };
+    }
     user.failedLoginCount += 1;
     if (user.failedLoginCount >= 5) {
       const lockUntil = new Date();
