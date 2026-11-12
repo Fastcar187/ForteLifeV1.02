@@ -203,7 +203,7 @@ export function Navbar({ user }: Props) {
                   href="/auth/register"
                   className="text-xs sm:text-sm bg-teal-600 hover:bg-teal-700 text-white px-3.5 py-2 rounded-lg font-medium shadow-sm transition-colors"
                 >
-                  Create Account
+                  Register as Patient
                 </Link>
               </div>
             )}
@@ -374,7 +374,7 @@ export function Navbar({ user }: Props) {
                     onClick={() => setMobileMenuOpen(false)}
                     className="w-full text-center py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-semibold text-sm shadow-sm"
                   >
-                    Create Account
+                    Register as Patient
                   </Link>
                 </div>
               )}

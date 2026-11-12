@@ -210,14 +210,22 @@ export async function verifyBackupCodeAction(formData: FormData) {
 
 export async function registerUserAction(formData: FormData) {
   const roleVal = (formData.get("role") as UserRole) || "patient";
+
+  if (roleVal !== "patient") {
+    return {
+      error:
+        "Public self-registration is restricted to Patient accounts. Clinical staff, doctors, and administrators are provisioned by hospital facility administrators.",
+    };
+  }
+
   const raw = {
-    role: roleVal,
+    role: "patient" as const,
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     phone: formData.get("phone"),
     password: formData.get("password"),
-    facilityId: formData.get("facilityId") || "",
-    titleOrSpecialty: formData.get("titleOrSpecialty") || "",
+    facilityId: "",
+    titleOrSpecialty: "",
     nhis: formData.get("nhis") || "",
     ghanaCard: formData.get("ghanaCard") || "",
     consentAccepted: formData.get("consentAccepted") === "true" || formData.get("consentAccepted") === "on",
