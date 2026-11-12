@@ -156,7 +156,8 @@ function LoginForm() {
           >
             <div>
               <div className="font-semibold text-navy-950">Kwame Mensah</div>
-              <div className="text-[11px] text-slate-500">Patient</div>
+              <div className="text-[11px] text-teal-700 font-medium">kwame.mensah@example.com</div>
+              <div className="text-[10px] text-slate-500">Patient (Direct login)</div>
             </div>
             <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
           </button>
@@ -167,7 +168,8 @@ function LoginForm() {
           >
             <div>
               <div className="font-semibold text-navy-950">Akua Adjei</div>
-              <div className="text-[11px] text-slate-500">Front Desk (Ridge)</div>
+              <div className="text-[11px] text-teal-700 font-medium">frontdesk.ridge@ghanahealth.gov.gh</div>
+              <div className="text-[10px] text-slate-500">Front Desk (Ridge)</div>
             </div>
             <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
           </button>
@@ -178,7 +180,8 @@ function LoginForm() {
           >
             <div>
               <div className="font-semibold text-navy-950">Dr. Boateng</div>
-              <div className="text-[11px] text-slate-500">Doctor (2FA Required)</div>
+              <div className="text-[11px] text-teal-700 font-medium">dr.boateng@ghanahealth.gov.gh</div>
+              <div className="text-[10px] text-slate-500">Doctor (2FA / Backup code)</div>
             </div>
             <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
           </button>
@@ -189,7 +192,8 @@ function LoginForm() {
           >
             <div>
               <div className="font-semibold text-navy-950">Dr. Grace Osei</div>
-              <div className="text-[11px] text-slate-500">Facility Admin (2FA)</div>
+              <div className="text-[11px] text-teal-700 font-medium">admin.ridge@ghanahealth.gov.gh</div>
+              <div className="text-[10px] text-slate-500">Facility Admin (Ridge)</div>
             </div>
             <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
           </button>
@@ -200,7 +204,8 @@ function LoginForm() {
           >
             <div>
               <div className="font-semibold text-navy-950">Ministry Director</div>
-              <div className="text-[11px] text-slate-500">National Platform Admin (2FA Required)</div>
+              <div className="text-[11px] text-teal-700 font-medium">director@ghanahealth.gov.gh</div>
+              <div className="text-[10px] text-slate-500">National Platform Admin</div>
             </div>
             <span className="text-[10px] text-teal-600 font-semibold group-hover:underline">Fill &rarr;</span>
           </button>
